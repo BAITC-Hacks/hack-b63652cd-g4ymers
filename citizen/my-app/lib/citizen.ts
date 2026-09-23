@@ -15,6 +15,13 @@ export type CitizenStatus =
 
 export type CitizenUrgency = "NORMAL" | "IMPORTANT" | "URGENT";
 
+export type CitizenLocation = {
+  latitude: number;
+  longitude: number;
+  accuracy: number;
+  capturedAt: string;
+};
+
 export type CitizenComment = {
   id: string;
   displayName: string;
@@ -47,9 +54,45 @@ export type QrLocation = {
   district: string;
   objectName: string;
   objectType: string;
+  streetName?: string;
   latitude: number;
   longitude: number;
   active: boolean;
+  locationVerified?: boolean;
+  distanceMeters?: number;
+  history?: StreetHistoryEvent[];
+  recentChanges?: CityChange[];
+};
+
+export type StreetHistoryEvent = {
+  id: string;
+  date: string;
+  title: string;
+  description: string;
+  type: "REPORT" | "CHANGE" | "RESOLUTION";
+};
+
+export type CityChange = {
+  id: string;
+  date: string;
+  title: string;
+  description: string;
+  status: "DONE" | "IN_PROGRESS";
+};
+
+export type RewardEvent = {
+  id: string;
+  type: "SCAN" | "REPORT" | "CONFIRM" | "COMMENT" | "RESOLUTION";
+  points: number;
+  createdAt: string;
+};
+
+export type CitizenBadge = {
+  id: string;
+  title: string;
+  description: string;
+  icon: "scan" | "report" | "community" | "resolved";
+  earned: boolean;
 };
 
 export type CitizenProfile = {
@@ -60,6 +103,9 @@ export type CitizenProfile = {
   resolvedReports: number;
   points: number;
   level: string;
+  streakDays?: number;
+  reportsThisMonth?: number;
+  badges?: CitizenBadge[];
 };
 
 export const categoryLabels: Record<CitizenCategory, string> = {
@@ -101,9 +147,20 @@ export const demoQrLocation: QrLocation = {
   district: "Нура",
   objectName: "Уличный фонарь №142",
   objectType: "Уличное освещение",
+  streetName: "ул. Сыганак",
   latitude: 51.1034,
   longitude: 71.4302,
   active: true,
+  locationVerified: true,
+  history: [
+    { id: "history-1", date: "20 сентября 2026", title: "Жители сообщили о проблеме", description: "23 сообщения о неработающих фонарях возле остановки.", type: "REPORT" },
+    { id: "history-2", date: "21 сентября 2026", title: "Заявка проверена", description: "Городская служба подтвердила неисправность на месте.", type: "CHANGE" },
+    { id: "history-3", date: "22 сентября 2026", title: "Ремонт запланирован", description: "Работы по замене светильников начались.", type: "RESOLUTION" },
+  ],
+  recentChanges: [
+    { id: "change-1", date: "22 сентября", title: "Начат ремонт освещения", description: "Подрядчик заменяет неисправные светильники на участке возле остановки.", status: "IN_PROGRESS" },
+    { id: "change-2", date: "июль 2026", title: "Обновлена остановка", description: "Появились новая скамейка и табличка с расписанием автобусов.", status: "DONE" },
+  ],
 };
 
 const demoProblems: CitizenProblem[] = [
@@ -210,6 +267,8 @@ const demoProblems: CitizenProblem[] = [
 
 const cloneProblems = () => demoProblems.map((problem) => ({ ...problem, comments: problem.comments.map((comment) => ({ ...comment })) }));
 
+const clonePublicProblems = () => cloneProblems().filter((problem) => problem.status === "RESOLVED");
+
 function readLocal<T>(key: string, fallback: T): T {
   if (typeof window === "undefined") return fallback;
   try {
@@ -222,6 +281,20 @@ function readLocal<T>(key: string, fallback: T): T {
 
 function writeLocal<T>(key: string, value: T) {
   if (typeof window !== "undefined") window.localStorage.setItem(key, JSON.stringify(value));
+}
+
+export function getSavedCitizenLocation() {
+  return readLocal<CitizenLocation | undefined>("citizen-location", undefined);
+}
+
+export function saveCitizenLocation(location: CitizenLocation) {
+  writeLocal("citizen-location", location);
+}
+
+function addRewardEvent(type: RewardEvent["type"], points: number, uniqueKey?: string) {
+  const events = readLocal<RewardEvent[]>("citizen-reward-events", []);
+  if (uniqueKey && events.some((event) => event.id === uniqueKey)) return;
+  writeLocal("citizen-reward-events", [...events, { id: uniqueKey ?? `${type}-${Date.now()}`, type, points, createdAt: new Date().toISOString() }]);
 }
 
 const apiBase = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "");
@@ -238,17 +311,24 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
 
 export const citizenApi = {
   async getProblems(): Promise<CitizenProblem[]> {
-    try { return await request<CitizenProblem[]>("/api/citizen/problems"); }
+    try { return await request<CitizenProblem[]>("/api/public/problems?status=RESOLVED"); }
     catch (error) {
       if (error instanceof Error && error.message !== "DEMO_MODE") throw error;
       const confirmed = readLocal<string[]>("citizen-confirmed", []);
-      return cloneProblems().map((problem) => ({ ...problem, confirmedByMe: confirmed.includes(problem.id), confirmations: problem.confirmations + (confirmed.includes(problem.id) ? 1 : 0) }));
+      return clonePublicProblems().map((problem) => ({ ...problem, confirmedByMe: confirmed.includes(problem.id), confirmations: problem.confirmations + (confirmed.includes(problem.id) ? 1 : 0) }));
     }
   },
-  async getProblem(id: string) {
-    try { return await request<CitizenProblem>(`/api/citizen/problems/${encodeURIComponent(id)}`); }
+  async getProblem(id: string, privateView = false) {
+    if (privateView) {
+      try { return await request<CitizenProblem>(`/api/citizen/my-reports/${encodeURIComponent(id)}`); }
+      catch (error) {
+        if (error instanceof Error && error.message !== "DEMO_MODE" && !error.message.startsWith("API_")) throw error;
+        return cloneProblems().slice(0, 2).find((problem) => problem.id === id);
+      }
+    }
+    try { return await request<CitizenProblem>(`/api/public/problems/${encodeURIComponent(id)}`); }
     catch (error) {
-      if (error instanceof Error && error.message !== "DEMO_MODE") throw error;
+      if (error instanceof Error && error.message !== "DEMO_MODE" && !error.message.startsWith("API_")) throw error;
       return (await this.getProblems()).find((problem) => problem.id === id);
     }
   },
@@ -256,7 +336,7 @@ export const citizenApi = {
     try { return await request<CitizenProblem[]>("/api/citizen/my-reports"); }
     catch (error) {
       if (error instanceof Error && error.message !== "DEMO_MODE") throw error;
-      return (await this.getProblems()).slice(0, 2);
+      return cloneProblems().slice(0, 2);
     }
   },
   async getQrLocation(code: string) {
@@ -266,13 +346,27 @@ export const citizenApi = {
       return code.toUpperCase() === demoQrLocation.code ? demoQrLocation : undefined;
     }
   },
+  async getPlaceHistory(code: string, citizenLocation?: CitizenLocation) {
+    const query = citizenLocation ? `?latitude=${citizenLocation.latitude}&longitude=${citizenLocation.longitude}&accuracy=${citizenLocation.accuracy}` : "";
+    let location: QrLocation | undefined;
+    try {
+      location = await request<QrLocation>(`/api/public/qr/${encodeURIComponent(code)}${query}`);
+    } catch (error) {
+      if (error instanceof Error && error.message !== "DEMO_MODE") throw error;
+      location = code.toUpperCase() === demoQrLocation.code ? { ...demoQrLocation, locationVerified: Boolean(citizenLocation) } : undefined;
+    }
+    if (!location) return undefined;
+    addRewardEvent("SCAN", 1, `SCAN-${location.code}`);
+    return { location, history: location.history ?? [], recentChanges: location.recentChanges ?? [] };
+  },
   async confirmProblem(id: string) {
     try { return await request<CitizenProblem>(`/api/citizen/problems/${encodeURIComponent(id)}/confirm`, { method: "POST" }); }
     catch (error) {
       if (error instanceof Error && error.message !== "DEMO_MODE") throw error;
       const confirmed = readLocal<string[]>("citizen-confirmed", []);
       if (!confirmed.includes(id)) writeLocal("citizen-confirmed", [...confirmed, id]);
-      return this.getProblem(id);
+      addRewardEvent("CONFIRM", 2, `CONFIRM-${id}`);
+      return this.getProblem(id, true);
     }
   },
   async addComment(id: string, text: string) {
@@ -282,15 +376,17 @@ export const citizenApi = {
       const comments = readLocal<Record<string, CitizenComment[]>>("citizen-comments", {});
       const comment = { id: `local-${Date.now()}`, displayName: "Вы", text, createdAt: new Date().toISOString(), own: true };
       writeLocal("citizen-comments", { ...comments, [id]: [...(comments[id] ?? []), comment] });
+      addRewardEvent("COMMENT", 2, `COMMENT-${id}-${text.slice(0, 20)}`);
       return comment;
     }
   },
-  async createReport(payload: { qrCode?: string; title: string; description: string; category: CitizenCategory; urgency: CitizenUrgency; photoUrl?: string }) {
+  async createReport(payload: { qrCode?: string; title: string; description: string; category: CitizenCategory; urgency: CitizenUrgency; photoUrl?: string; location?: CitizenLocation }) {
     try { return await request<{ id: string; problemId: string }>("/api/citizen/reports", { method: "POST", body: JSON.stringify(payload) }); }
     catch (error) {
       if (error instanceof Error && error.message !== "DEMO_MODE") throw error;
       const id = `report-demo-${Date.now()}`;
       writeLocal("citizen-last-report", { id, problemId: "problem-lighting-nura" });
+      addRewardEvent("REPORT", 10, `REPORT-${id}`);
       return { id, problemId: "problem-lighting-nura" };
     }
   },
@@ -299,7 +395,19 @@ export const citizenApi = {
     catch (error) {
       if (error instanceof Error && error.message !== "DEMO_MODE") throw error;
       const confirmed = readLocal<string[]>("citizen-confirmed", []);
-      return { displayName: "Алия С.", district: "Нура", reports: 2, confirmedProblems: confirmed.length + 8, resolvedReports: 1, points: 240 + confirmed.length * 2, level: "Активный житель" };
+      const events = readLocal<RewardEvent[]>("citizen-reward-events", []);
+      const earned = events.reduce((sum, event) => sum + event.points, 0);
+      const reports = events.filter((event) => event.type === "REPORT").length;
+      return {
+        displayName: "Алия С.", district: "Нура", reports: 2 + reports, confirmedProblems: confirmed.length + 8, resolvedReports: 1,
+        points: 240 + earned, level: earned > 80 ? "Городской помощник" : "Активный житель", streakDays: Math.min(7, 2 + events.length), reportsThisMonth: reports,
+        badges: [
+          { id: "first-scan", title: "Первый скан", description: "Сканировали QR места", icon: "scan", earned: events.some((event) => event.type === "SCAN") },
+          { id: "first-report", title: "Внимательный сосед", description: "Отправили сообщение", icon: "report", earned: reports > 0 },
+          { id: "community", title: "Голос района", description: "Поддержали 5 проблем", icon: "community", earned: confirmed.length >= 5 },
+          { id: "resolved", title: "До результата", description: "Проблема решена", icon: "resolved", earned: true },
+        ],
+      };
     }
   },
 };
