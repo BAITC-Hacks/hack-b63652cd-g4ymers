@@ -9,6 +9,7 @@ import { ScenarioLibrary } from "./scenario-library";
 import { ReportsPanel } from "./reports-panel";
 import { ScenarioFlow, type ScenarioStage } from "./scenario-flow";
 import { DistrictInsightsPanel } from "./district-insights";
+import { AkimGuide, type GuideDestination } from "./akim-guide";
 export function Workspace({ user, catalog, baseline, onLogout }: { user: User; catalog: Catalog; baseline: Result; onLogout: () => Promise<void> }) {
     const { districts, measures } = catalog;
     const [selectedDistrict, setSelectedDistrict] = useState("nura");
@@ -18,6 +19,7 @@ export function Workspace({ user, catalog, baseline, onLogout }: { user: User; c
     const [uiHidden, setUiHidden] = useState(false);
     const [notice, setNotice] = useState("");
     const [modal, setModal] = useState<"help" | "reset">("help");
+    const [guideVisit, setGuideVisit] = useState(0);
     const [result, setResult] = useState<Result>(baseline);
     const [scenario, setScenario] = useState<Scenario | null>(null);
     const [name, setName] = useState("Мой план развития");
@@ -53,7 +55,18 @@ export function Workspace({ user, catalog, baseline, onLogout }: { user: User; c
     const spent = result.spent;
     const selected = result.districts.find(d => d.id === selectedDistrict)!;
     const before = baseline.districts.find(d => d.id === selectedDistrict)!;
-    function openModal(next: typeof modal) { setModal(next); dialog.current?.showModal(); }
+    function openModal(next: typeof modal) {
+        setModal(next);
+        if (next === "help") setGuideVisit(visit => visit + 1);
+        dialog.current?.showModal();
+    }
+    function navigateFromGuide(destination: GuideDestination) {
+        dialog.current?.close();
+        setUiHidden(false);
+        if (destination === "map") { setPanel(null); return; }
+        if (destination === "flow" && stage === "start") setStage("build");
+        setPanel(destination);
+    }
     async function run(action: () => Promise<void>) {
         if (lock.current) return;
         lock.current = true; setBusy(true); setError("");
@@ -115,7 +128,7 @@ export function Workspace({ user, catalog, baseline, onLogout }: { user: User; c
       <CityMap selected={selectedDistrict} onSelect={id => { setSelectedDistrict(id); setPanel(current => current === "flow" || current === "advisor" ? current : "district"); }} plan={plan} catalog={catalog} fullViewport uiHidden={uiHidden}/>
       <main className="map-interface" aria-label="Управление городом" hidden={uiHidden}>
         <header className="floating-brand"><BrandLogo compact/><div><span className="eyebrow">АКИМ НА 5 ЧАСОВ · HACKALEM 2026</span><h1>E-Akim<span>AI</span></h1></div></header>
-        <div className="floating-actions"><button className="icon-button" aria-label="Как играть" title="Как играть" onClick={() => openModal("help")}><Icon name="help" size={19}/></button><button className="icon-button" aria-label="Новый сценарий" title="Новый сценарий" disabled={busy || (!scenario && plan.length === 0)} onClick={() => openModal("reset")}><Icon name="reset" size={18}/></button></div>
+        <div className="floating-actions"><button className="guide-trigger" aria-label="Как пользоваться" title="Как пользоваться кабинетом акима" onClick={() => openModal("help")}><Icon name="help" size={19}/><span>Как пользоваться</span></button><button className="icon-button" aria-label="Новый сценарий" title="Новый сценарий" disabled={busy || (!scenario && plan.length === 0)} onClick={() => openModal("reset")}><Icon name="reset" size={18}/></button></div>
         <section className="summary-strip" aria-label="Сводка сценария">
           <div className="summary-item budget-summary"><span className="summary-icon"><Icon name="wallet"/></span><div><span className="summary-label">Доступный бюджет</span><div className="summary-value">{100 - spent}<span>/ 100 ед.</span></div></div><div className="mini-budget" title={`Осталось ${100 - spent} единиц`}><span style={{ width: `${100 - spent}%` }}/></div></div>
           <div className="summary-item"><span className="summary-icon"><Icon name="layers"/></span><div><span className="summary-label">Ваши решения</span><div className="summary-value">{plan.length}<span>/ 5 выбрано</span></div></div><div className="decision-dots">{Array.from({ length: 5 }, (_, i) => <span className={i < plan.length ? "filled" : ""} key={i}/>)}</div></div>
@@ -154,17 +167,9 @@ export function Workspace({ user, catalog, baseline, onLogout }: { user: User; c
         <div className="map-data-note"><span className="live-dot"/> Общая база · Учебная модель</div>
       </main>
       <button className="interface-toggle" aria-label={uiHidden ? "Показать интерфейс" : "Скрыть интерфейс"} aria-pressed={uiHidden} onClick={() => setUiHidden(v => !v)}><Icon name={uiHidden ? "grid" : "expand"} size={17}/><span>{uiHidden ? "Показать панели" : "Только карта"}</span></button>
-    <dialog ref={dialog} className="app-dialog" aria-labelledby="dialog-title" onClick={e => { if (e.target === dialog.current)
+    <dialog ref={dialog} className={`app-dialog${modal === "help" ? " guide-dialog" : ""}`} aria-labelledby={modal === "help" ? "guide-title" : "dialog-title"} onClick={e => { if (e.target === dialog.current)
         dialog.current.close(); }}><div className="dialog-content"><button className="dialog-close icon-button" aria-label="Закрыть окно" onClick={() => dialog.current?.close()}><Icon name="close"/></button>
-      {modal === "help" ? <>
-        <span className="dialog-eyebrow">ВАШ ГОРОД. ВАШИ РЕШЕНИЯ.</span>
-        <h2 id="dialog-title">Три шага к плану развития</h2>
-        <ol className="rules-list"><li>Нажмите «Начать сценарий». Выберите район и добавьте инициативы — текущий план и остаток бюджета всегда рядом.</li><li>Когда выбрано 5 инициатив, нажмите «Проверить план». Здесь можно изменить название и проверить районы и стоимость.</li><li>Нажмите «Завершить и сохранить», чтобы увидеть итог и вернуться к нему позже через «Сохранённые».</li></ol>
-        <p>Бюджет — 100 единиц, ровно 5 уникальных инициатив, максимум 2 одного направления. Городские меры действуют во всех районах. Недоступные сочетания отмечены прямо в каталоге.</p>
-        <div className="formula-box">Score = 0.7 × среднее по населению<br />+ 0.3 × худший район − критические показатели</div>
-        <p className="dialog-footnote">Показатели синтетические. Это оценка учебной модели, а не прогноз реального развития города.</p>
-        <button className="button button-primary" onClick={() => { dialog.current?.close(); if (stage === "start") setStage("build"); setPanel("flow"); }}>{stage === "start" ? "Начать сценарий" : "Вернуться к сценарию"}<Icon name="arrow" size={16}/></button>
-      </> : <>
+      {modal === "help" ? <AkimGuide key={guideVisit} onNavigate={navigateFromGuide} onClose={() => dialog.current?.close()}/> : <>
         <span className="dialog-eyebrow">НОВЫЙ СЦЕНАРИЙ</span><h2 id="dialog-title">Начать с чистого листа?</h2>
         <p>Несохранённые изменения текущего плана будут потеряны. Сохранённые сценарии останутся в базе. Бюджет нового плана — 100 единиц.</p>
         <div className="dialog-actions"><button className="button button-outline" onClick={() => dialog.current?.close()}>Продолжить текущий</button><button className="button button-primary" disabled={busy} onClick={() => { reset(); dialog.current?.close(); }}>Начать новый сценарий</button></div>

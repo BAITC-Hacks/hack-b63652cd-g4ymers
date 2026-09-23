@@ -1,0 +1,66 @@
+.floating-actions .guide-trigger { display: flex; align-items: center; gap: 7px; min-height: 38px; padding: 6px 9px; border-radius: 8px; color: var(--foreground); background: var(--surface); font-size: 11px; line-height: 1.35; text-align: left; }
+.guide-trigger > span { max-width: 76px; }
+.guide-trigger > svg { flex-shrink: 0; color: var(--cyan); }
+.floating-actions .guide-trigger:hover { background: var(--accent-secondary); }
+@media (min-width: 761px) { .immersive-shell .summary-strip { right: 215px; } }
+.app-dialog.guide-dialog { width: min(700px, calc(100vw - 24px)); max-height: calc(100dvh - 32px); overflow: hidden; }
+.guide-dialog .dialog-content { padding: 0; }
+.guide-dialog .dialog-close { z-index: 2; top: 16px; right: 16px; }
+.akim-guide { display: flex; flex-direction: column; max-height: calc(100dvh - 34px); }
+.guide-header { padding: 26px 58px 19px 26px; flex-shrink: 0; }
+.guide-header .dialog-eyebrow { margin-bottom: 8px; font-size: 9px; }
+.guide-header h2 { color: var(--foreground); font-size: 25px; letter-spacing: -.7px; }
+.guide-header p { margin-top: 7px; color: var(--muted); font-size: 12px; line-height: 1.5; }
+.guide-topics { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; padding: 0 20px 18px; border-bottom: 1px solid var(--surface); flex-shrink: 0; }
+.guide-topics button { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; min-width: 0; padding: 9px 4px; border: 1px solid var(--surface); border-radius: 9px; color: var(--muted); font-size: 11px; }
+.guide-topics button > span { display: grid; place-items: center; width: 21px; height: 21px; border-radius: 50%; background: var(--surface); font-size: 10px; }
+.guide-topics button:hover { border-color: var(--accent); color: var(--foreground); }
+.guide-topics button[aria-current="step"] { background: #5A82EC20; border-color: var(--accent); color: var(--foreground); }
+.guide-topics button[aria-current="step"] > span { background: var(--accent); color: var(--background); }
+.guide-body { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 22px 26px 24px; scrollbar-color: var(--accent-secondary) transparent; }
+.guide-topic-heading { display: flex; align-items: center; gap: 12px; margin-bottom: 19px; }
+.guide-topic-icon { display: grid; place-items: center; height: 43px; width: 43px; flex-shrink: 0; border-radius: 11px; color: var(--cyan); background: #78E2EA12; }
+.guide-topic-heading > div > span { color: var(--muted); font-size: 10px; }
+.guide-topic-heading h3 { margin-top: 4px; font-size: 17px; line-height: 1.35; color: var(--foreground); }
+.guide-instructions { display: grid; gap: 15px; margin: 0; padding: 0; list-style: none; counter-reset: guide-instruction; }
+.guide-instructions li { position: relative; padding-left: 33px; counter-increment: guide-instruction; }
+.guide-instructions li::before { content: counter(guide-instruction); position: absolute; top: 1px; left: 0; display: grid; place-items: center; width: 21px; height: 21px; border: 1px solid #5A82EC66; color: var(--cyan); border-radius: 6px; font-size: 11px; }
+.guide-instructions strong { font-size: 13px; font-weight: 600; color: var(--foreground); }
+.guide-instructions p { margin-top: 5px; color: var(--muted); font-size: 12px; line-height: 1.6; }
+.guide-tip { display: flex; align-items: flex-start; gap: 9px; margin-top: 20px; padding: 12px 13px; border-radius: 10px; background: var(--surface); color: var(--muted); font-size: 11px; line-height: 1.6; }
+.guide-tip > svg { color: var(--cyan); flex-shrink: 0; margin-top: 1px; }
+.guide-body .guide-open { display: flex; margin-top: 20px; min-height: 42px; height: auto; padding: 11px 17px; font-size: 12px; line-height: 1.4; }
+.guide-rating-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.guide-rating-cards article { padding: 16px; border: 1px solid var(--surface); border-radius: 11px; }
+.guide-rating-cards article > span { color: var(--cyan); font-size: 9px; letter-spacing: .6px; }
+.guide-rating-cards h4 { font-size: 15px; margin-top: 8px; line-height: 1.4; }
+.guide-rating-cards p { font-size: 12px; color: var(--muted); line-height: 1.6; margin-top: 8px; }
+.guide-rating-cards small { display: block; font-size: 11px; line-height: 1.6; margin-top: 12px; color: var(--muted); }
+.guide-controls { display: grid; gap: 0; }
+.guide-controls > div { display: grid; grid-template-columns: minmax(120px, .75fr) 1.5fr; gap: 15px; padding: 12px 0; border-bottom: 1px solid var(--surface); }
+.guide-controls > div:first-child { padding-top: 0; }
+.guide-controls dt { color: var(--foreground); font-size: 12px; line-height: 1.55; }
+.guide-controls dd { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.55; }
+.guide-footer { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-shrink: 0; padding: 15px 26px; border-top: 1px solid var(--surface); }
+.guide-footer > span { font-size: 11px; color: var(--muted); }
+.guide-footer .button { min-width: 91px; min-height: 37px; font-size: 11px; }
+@media (max-width: 760px) {
+  .floating-actions .guide-trigger { font-size: 10px; min-height: 35px; padding: 5px 7px; width: 77px; justify-content: center; text-align: center; }
+  .guide-trigger > svg { display: none; }
+}
+@media (max-width: 480px) {
+  .guide-header { padding: 22px 50px 15px 18px; }
+  .guide-header h2 { font-size: 22px; }
+  .guide-header .dialog-eyebrow { font-size: 7px; }
+  .guide-header p { font-size: 11px; }
+  .guide-topics { gap: 4px; padding: 0 12px 12px; }
+  .guide-topics button { font-size: 9px; padding: 8px 2px; }
+  .guide-body { padding: 18px; }
+  .guide-topic-heading h3 { font-size: 16px; }
+  .guide-rating-cards { grid-template-columns: 1fr; gap: 9px; }
+  .guide-rating-cards article { padding: 13px; }
+  .guide-controls > div { grid-template-columns: 1fr; gap: 4px; }
+  .guide-footer { padding: 12px 18px; }
+  .guide-body .guide-open { width: 100%; }
+}
+@media (max-width: 380px) { .floating-brand .eyebrow { display: none; } }

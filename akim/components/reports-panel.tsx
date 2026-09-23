@@ -54,6 +54,13 @@ export function ReportsPanel({ catalog }: { catalog: Catalog }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   useEffect(() => {
+    const refresh = () => { if (document.visibilityState === "visible") setReload(value => value + 1); };
+    const interval = window.setInterval(refresh, 15000);
+    window.addEventListener("focus", refresh);
+    document.addEventListener("visibilitychange", refresh);
+    return () => { window.clearInterval(interval); window.removeEventListener("focus", refresh); document.removeEventListener("visibilitychange", refresh); };
+  }, []);
+  useEffect(() => {
     let active = true;
     const query = new URLSearchParams({ page: String(page), size: "20", ...(district ? { district } : {}), ...(status ? { status } : {}), ...(category ? { category } : {}) });
     api<Problem[]>(`akim/problems?${query}`).then(rows => { if (active) { setRows(rows); setError(""); } }).catch(e => { if (active) setError(message(e)); }).finally(() => { if (active) setLoading(false); });

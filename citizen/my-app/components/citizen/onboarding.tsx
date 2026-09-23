@@ -120,7 +120,7 @@ export function CitizenTourHelp() {
   if (!tour) return null;
   const canResume = tour.progress?.status === "dismissed" && tour.progress.step > 0;
   return <section className="tour-help-card"><span className="tour-icon"><CitizenIcon name="map" size={25} /></span><div><span className="citizen-eyebrow">ПОШАГОВАЯ ЭКСКУРСИЯ</span>
-    <h2>Покажем, куда нажимать</h2><p>{tourSteps.length} коротких шагов: QR, адрес, обращение, статусы и баллы. Можно проходить в своём темпе.</p>
+    <h2>Покажем, куда нажимать</h2><p>{tourSteps.length} коротких шагов: карта, район, обращение, статусы и баллы. QR — дополнительный способ выбрать место. Можно проходить в своём темпе.</p>
     <div className="tour-help-actions">{canResume && <button className="citizen-button primary" onClick={tour.resume}>Продолжить с шага {tour.progress!.step + 1}</button>}
       <button className={`citizen-button ${canResume ? "secondary" : "primary"}`} onClick={tour.start} disabled={!tour.ready}>Пройти обучение заново</button></div>
     <small>Прогресс запоминается для вашего аккаунта в этом браузере.</small></div></section>;

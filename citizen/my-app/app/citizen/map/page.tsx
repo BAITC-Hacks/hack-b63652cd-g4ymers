@@ -1,3 +1,3 @@
-import { CitizenMapPage } from "@/components/citizen/citizen-pages";
+import { CitizenCityMapPage } from "@/components/citizen/city-map-page";
 
-export default function CitizenMapRoute() { return <CitizenMapPage />; }
+export default function CitizenMapRoute() { return <CitizenCityMapPage />; }

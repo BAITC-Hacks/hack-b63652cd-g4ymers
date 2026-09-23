@@ -3,6 +3,7 @@
 import { createContext, useContext, useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
 import { CitizenApiError, citizenRequest, type CitizenCatalog, type CitizenUser } from "@/lib/citizen";
 import { CitizenOnboardingProvider } from "./onboarding";
+import { BrandLogo } from "./brand-logo";
 
 const AuthContext = createContext<{ user: CitizenUser; logout: () => Promise<void> } | null>(null);
 export function useCitizenAuth() { return useContext(AuthContext); }
@@ -41,7 +42,7 @@ export function CitizenAuthProvider({ children }: { children: ReactNode }) {
   }
   if (loading) return <div className="citizen-auth" role="status">Проверяем сессию…</div>;
   if (user) return <AuthContext.Provider value={{ user, logout }}><CitizenOnboardingProvider key={user.id} userId={user.id}>{error && <p className="auth-error" role="alert">{error}<button onClick={() => setError("")}>Закрыть</button></p>}{children}</CitizenOnboardingProvider></AuthContext.Provider>;
-  return <main className="citizen-auth"><section className="citizen-auth-card"><span className="citizen-eyebrow">ҚАЛАҒА КӨМЕКТ · ЖИТЕЛЬ</span><h1>{register ? "Создать аккаунт" : "Войти в свой город"}</h1><p>Вход по ИИН и паролю. Обращения и их статусы сохраняются в вашем кабинете.</p>
+  return <main className="citizen-auth"><section className="citizen-auth-card"><BrandLogo /><span className="citizen-eyebrow">КАБИНЕТ ЖИТЕЛЯ · АСТАНА</span><h1>{register ? "Создать аккаунт" : "Ваш голос меняет город"}</h1><p>Выберите район на карте, сообщите о проблеме и следите за её решением. Вход по ИИН и паролю.</p>
     <div className="auth-tabs"><button type="button" aria-pressed={!register} onClick={() => { setRegister(false); setError(""); }}>Вход</button><button type="button" aria-pressed={register} onClick={() => { setRegister(true); setError(""); }}>Регистрация</button></div>
     <form onSubmit={submit}><label className="report-label">ИИН<input name="iin" inputMode="numeric" pattern="[0-9]{12}" minLength={12} maxLength={12} autoComplete="username" required placeholder="12 цифр" /></label>
       {register && <><label className="report-label">Как к вам обращаться<input name="displayName" required maxLength={80} autoComplete="name" /></label><label className="report-label">Район<select name="districtId" required defaultValue=""><option value="" disabled>Выберите район</option>{catalog.districts.map(d => <option value={d.id} key={d.id}>{d.name}</option>)}</select></label>{!catalog.districts.length && <p role="alert">Не удалось загрузить районы. <button type="button" onClick={() => citizenRequest<CitizenCatalog>("public/catalog").then(setCatalog).catch(e => setError(e.message))}>Повторить</button></p>}</>}

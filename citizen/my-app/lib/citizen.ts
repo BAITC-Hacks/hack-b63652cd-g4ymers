@@ -15,6 +15,18 @@ export type CitizenStatus =
 
 export type CitizenUrgency = "NORMAL" | "IMPORTANT" | "URGENT";
 
+export type CitizenReportInput = {
+  title: string;
+  description: string;
+  category: CitizenCategory;
+  urgency: CitizenUrgency;
+} & (
+  | { qrCode: string; location?: CitizenLocation }
+  | { districtId: string; locationLabel: string; latitude: number; longitude: number }
+);
+
+export const citizenReportsChanged = "citizen-reports-changed";
+
 export type CitizenLocation = {
   latitude: number;
   longitude: number;
@@ -202,8 +214,11 @@ export const citizenApi = {
   confirmProblem: (id: string) => citizenRequest<CitizenProblem>(`citizen/problems/${encodeURIComponent(id)}/confirm`, { method: "POST" }),
   addComment: (id: string, text: string) => citizenRequest<CitizenComment>(`citizen/problems/${encodeURIComponent(id)}/comments`,
     { method: "POST", body: JSON.stringify({ text }) }),
-  createReport: (payload: { qrCode: string; title: string; description: string; category: CitizenCategory; urgency: CitizenUrgency; location?: CitizenLocation }) =>
-    citizenRequest<{ id: string; problemId: string }>("citizen/reports", { method: "POST", body: JSON.stringify(payload) }),
+  async createReport(payload: CitizenReportInput) {
+    const saved = await citizenRequest<{ id: string; problemId: string }>("citizen/reports", { method: "POST", body: JSON.stringify(payload) });
+    window.dispatchEvent(new Event(citizenReportsChanged));
+    return saved;
+  },
   getProfile: () => citizenRequest<CitizenProfile>("citizen/profile"),
 };
 export function getMergedComments(problem: CitizenProblem): CitizenComment[] { return problem.comments; }

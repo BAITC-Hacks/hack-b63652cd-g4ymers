@@ -5,6 +5,7 @@ import "./immersive-map.css";
 import "./backend-ui.css";
 import "./brand-theme.css";
 import "./scenario-flow.css";
+import "./akim-guide.css";
 
 export const metadata: Metadata = {
   title: "E-AkimAI — Аким на 5 часов",

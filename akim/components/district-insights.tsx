@@ -9,6 +9,13 @@ export function DistrictInsightsPanel({ district, advice = false }: { district: 
   const [reload, setReload] = useState(0);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
+    const refresh = () => { if (document.visibilityState === "visible") setReload(value => value + 1); };
+    const interval = window.setInterval(refresh, 15000);
+    window.addEventListener("focus", refresh);
+    document.addEventListener("visibilitychange", refresh);
+    return () => { window.clearInterval(interval); window.removeEventListener("focus", refresh); document.removeEventListener("visibilitychange", refresh); };
+  }, []);
+  useEffect(() => {
     let active = true;
     api<DistrictInsights>(`akim/districts/${district}/insights`).then(result => { if(active) { setData(result); setError(""); } })
       .catch(e => { if(active) setError(message(e)); }).finally(() => { if(active) setLoading(false); });

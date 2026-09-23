@@ -37,7 +37,7 @@ export function CitizenReportPage() {
     catch (e) { setError(e instanceof Error ? e.message : "Не удалось отправить обращение"); }
     finally { lock.current = false; setBusy(false); }
   }
-  if (sent) return <section className="report-success"><div className="success-check"><CitizenIcon name="check" size={30} /></div><h1>Обращение принято</h1><p>Оно сохранено в базе и доступно акимату. Статус можно проверить в личном кабинете.</p><strong>№ {sent.id.slice(-8).toUpperCase()}</strong><div className="success-actions"><Link className="citizen-button primary" href={`/citizen/problems/${sent.problemId}?private=1`}>Моё обращение</Link><Link className="citizen-button secondary" href="/citizen">На главную</Link></div></section>;
+  if (sent) return <section className="report-success"><div className="success-check"><CitizenIcon name="check" size={30} /></div><h1>Обращение принято</h1><p>Оно сохранено в базе, доступно акимату и учитывается в рейтинге района по обращениям. Статус можно проверить в личном кабинете.</p><strong>№ {sent.id.slice(-8).toUpperCase()}</strong><div className="success-actions"><Link className="citizen-button primary" href="/citizen/my-reports">Мои обращения</Link><Link className="citizen-button secondary" href={`/citizen/problems/${sent.problemId}?private=1`}>Открыть обращение</Link></div></section>;
   return <div className="report-flow"><div className="report-flow-top"><Link href="/citizen/scan" className="citizen-back">← Сканер</Link><span>Обращение в акимат</span><span>{step+1} / 3</span></div>
     <LocationPermission onLocation={setCoordinates} />
     {error && <p className="auth-error" role="alert">{error}</p>}
