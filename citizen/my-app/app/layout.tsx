@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import "./globals.css";
+import "./onboarding.css";
 import { CitizenAuthProvider } from "@/components/citizen/auth-provider";
 
 export const metadata: Metadata = {

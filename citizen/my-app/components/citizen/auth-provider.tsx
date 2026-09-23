@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
 import { CitizenApiError, citizenRequest, type CitizenCatalog, type CitizenUser } from "@/lib/citizen";
+import { CitizenOnboardingProvider } from "./onboarding";
 
 const AuthContext = createContext<{ user: CitizenUser; logout: () => Promise<void> } | null>(null);
 export function useCitizenAuth() { return useContext(AuthContext); }
@@ -39,7 +40,7 @@ export function CitizenAuthProvider({ children }: { children: ReactNode }) {
     catch (e) { setError(e instanceof Error ? e.message : "Не удалось выйти"); }
   }
   if (loading) return <div className="citizen-auth" role="status">Проверяем сессию…</div>;
-  if (user) return <AuthContext.Provider value={{ user, logout }}>{error && <p className="auth-error" role="alert">{error}<button onClick={() => setError("")}>Закрыть</button></p>}{children}</AuthContext.Provider>;
+  if (user) return <AuthContext.Provider value={{ user, logout }}><CitizenOnboardingProvider key={user.id} userId={user.id}>{error && <p className="auth-error" role="alert">{error}<button onClick={() => setError("")}>Закрыть</button></p>}{children}</CitizenOnboardingProvider></AuthContext.Provider>;
   return <main className="citizen-auth"><section className="citizen-auth-card"><span className="citizen-eyebrow">ҚАЛАҒА КӨМЕКТ · ЖИТЕЛЬ</span><h1>{register ? "Создать аккаунт" : "Войти в свой город"}</h1><p>Вход по ИИН и паролю. Обращения и их статусы сохраняются в вашем кабинете.</p>
     <div className="auth-tabs"><button type="button" aria-pressed={!register} onClick={() => { setRegister(false); setError(""); }}>Вход</button><button type="button" aria-pressed={register} onClick={() => { setRegister(true); setError(""); }}>Регистрация</button></div>
     <form onSubmit={submit}><label className="report-label">ИИН<input name="iin" inputMode="numeric" pattern="[0-9]{12}" minLength={12} maxLength={12} autoComplete="username" required placeholder="12 цифр" /></label>
