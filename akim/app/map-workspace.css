@@ -1,0 +1,267 @@
+/* The city is the primary workspace; scenario building lives beside and below it. */
+main { max-width: 1920px; padding: 23px 28px 0; }
+.topbar { min-height: 56px; padding-inline: 28px; }
+.page-heading { margin-bottom: 20px; }
+.page-heading h1 { font-size: 29px; }
+.page-heading .eyebrow { margin-bottom: 8px; }
+.summary-strip { padding-block: 15px; margin-bottom: 20px; }
+.summary-value { font-size: 22px; }
+.dashboard-grid { display: grid; grid-template-columns: minmax(0, 1fr) 268px; gap: 18px; }
+.center-column { display: contents; }
+.map-panel { grid-column: 1; grid-row: 1; border-color: #dfdce9; box-shadow: 0 5px 22px #3f335b05; }
+.district-panel { grid-column: 1; grid-row: 2; }
+.advisor-panel { grid-column: 2; grid-row: 2; padding: 18px 15px; gap: 9px; min-height: 100%; }
+.advisor-icon { width: 29px; height: 29px; }
+.advisor-icon svg { width: 18px; }
+.advisor-title { flex-wrap: wrap; gap: 5px; }
+.advisor-title h2 { font-size: 11px; }
+.advisor-content>p { font-size: 10px; }
+.advisor-status { align-items: flex-start; line-height: 1.5; }
+.advisor-status>span { margin-top: 4px; flex-shrink: 0; }
+.plan-panel { grid-column: 2; grid-row: 1; display: block; padding: 0 0 16px; }
+.plan-panel>.panel-heading { padding: 19px 16px 16px; }
+.plan-budget { margin: 0 15px 15px; }
+.plan-list { padding: 0 15px; gap: 8px; }
+.plan-slot { min-height: 54px; }
+.plan-hint { margin: 13px 18px 0; }
+.plan-notice { margin: 8px 17px 0; min-height: 26px; }
+.plan-actions { margin: 12px 15px 0; }
+.score-note { margin: 14px 15px 0; padding: 12px 0 0; text-align: left; }
+.score-note-icon { display: none; }
+.score-note p { font-size: 9px; }
+.score-note>span:last-child { margin-top: 7px; }
+.catalog-panel { grid-column: 1 / -1; grid-row: 3; scroll-margin-top: 20px; }
+.catalog-panel .panel-heading { padding: 22px 22px 15px; }
+.catalog-panel .panel-heading h2 { font-size: 17px; }
+.catalog-panel .panel-heading p { font-size: 11px; }
+.catalog-panel .search-box { display: inline-flex; width: 260px; margin: 0 14px 15px 22px; vertical-align: top; }
+.catalog-panel .category-filter { display: inline-flex; width: 265px; margin: 0 22px 15px 0; vertical-align: top; }
+.catalog-panel .category-filter button { height: 35px; }
+.catalog-caption { margin-inline: 22px; }
+.measure-list { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 13px; align-items: stretch; height: auto; max-height: 580px; padding: 0 20px 20px; }
+.measure-card { margin: 0; padding: 15px; display: flex; flex-direction: column; }
+.measure-card h3 { font-size: 12px; }
+.measure-card>p { min-height: 33px; font-size: 10px; }
+.measure-card .measure-bottom { margin-top: auto; }
+.measure-card .measure-meta { margin-bottom: 4px; }
+.search-empty { grid-column: 1 / -1; }
+.catalog-footer { padding-inline: 22px; font-size: 10px; }
+.catalog-district-picker { display: flex; align-items: center; gap: 7px; }
+.catalog-district-picker select { border: 1px solid #e0d5ee; border-radius: 5px; background: #fff; color: #86629f; font: inherit; padding: 5px 8px; }
+.catalog-budget-summary { margin-left: auto; color: #9478aa; }
+.catalog-footer>a { display: inline-flex; align-items: center; gap: 6px; margin-left: 14px; color: #8861aa; text-decoration: none; }
+.catalog-footer>a svg { transform: rotate(-90deg); }
+.catalog-district-picker select:focus-visible { outline: 2px solid #9570e4; outline-offset: 2px; }
+#catalog-title, #plan-title { scroll-margin-top: 24px; }
+.map-panel-toolbar { height: 48px; padding-inline: 20px; }
+.map-catalog-link { display: flex; align-items: center; gap: 6px; font-size: 10px; color: #8864b8; text-decoration: none; white-space: nowrap; }
+.map-catalog-link:hover { color: #5f3b98; }
+.map-catalog-link svg { transform: rotate(90deg); }
+.astana-map { height: clamp(540px, 59vw, 690px); background: #f6f8fd; isolation: isolate; }
+.astana-illustration { width: 100%; height: 100%; left: 0; cursor: grab; user-select: none; touch-action: pan-y; }
+.astana-illustration:active { cursor: grabbing; }
+.astana-map-heading { position: absolute; z-index: 2; left: 25px; top: 24px; display: flex; flex-direction: column; gap: 8px; pointer-events: none; }
+.map-city-kicker { display: flex; align-items: center; gap: 6px; color: #8d7caa; font-size: 8px; letter-spacing: 1.8px; font-weight: 600; }
+.astana-map-heading>strong { color: #443a59; font-size: 22px; font-weight: 600; letter-spacing: -.7px; }
+.astana-map-heading>span:last-child { font-size: 10px; color: #94889f; }
+.map-top-controls { position: absolute; right: 22px; top: 23px; display: flex; gap: 10px; align-items: center; z-index: 4; }
+.city-map-mode { font-size: 7px; letter-spacing: 1px; color: #a495b3; }
+.map-expand-button { display: inline-flex; min-height: 31px; gap: 6px; align-items: center; border-radius: 6px; padding: 0 9px; border: 1px solid #e3ddeb; background: #ffffffd9; color: #8a74a2; font-size: 9px; }
+.map-expand-button:hover { background: #f2eafb; color: #7652a1; }
+.astana-compass { display: flex; flex-direction: column; align-items: center; gap: 3px; position: absolute; left: 26px; bottom: 95px; font-size: 8px; color: #a296b0; pointer-events: none; }
+.astana-map-bottom { position: absolute; left: 23px; bottom: 22px; pointer-events: none; }
+.astana-map-bottom>div { display: flex; align-items: center; gap: 6px; font-size: 10px; color: #85718e; }
+.astana-map-bottom strong { font-weight: 600; color: #7d609b; }
+.astana-map-bottom>p { font-size: 8px; color: #a297af; margin-top: 8px; }
+.astana-map .map-tools { z-index: 3; bottom: 22px; right: 22px; padding: 5px; }
+.map-tools>.zoom-value { width: 37px; height: auto; font-size: 9px; text-align: center; color: #92809e; background: none; margin: 0 2px; font-variant-numeric: tabular-nums; }
+.city-landmark { cursor: pointer; outline: none; }
+.city-landmark .landmark-halo { transition: opacity .2s; }
+.city-landmark:hover .landmark-halo, .city-landmark:focus-visible .landmark-halo { opacity: .5; }
+.city-landmark:hover .landmark-name rect, .city-landmark:focus-visible .landmark-name rect { stroke: #9c78ce; stroke-width: 2; }
+.landmark-detail { position: absolute; left: 22px; top: 126px; width: 206px; z-index: 5; border: 1px solid #e0d8ec; background: #fffffff5; padding: 18px 16px 14px; border-radius: 10px; box-shadow: 0 10px 35px #4f3c7210; }
+.landmark-detail>.icon-button { position: absolute; right: 6px; top: 6px; width: 23px; height: 23px; }
+.landmark-detail>span { font-size: 7px; letter-spacing: 1px; color: #a189b8; }
+.landmark-detail>h3 { font-size: 16px; letter-spacing: -.3px; margin-top: 9px; color: #6c4d87; }
+.landmark-detail>p { color: #9783a3; font-size: 10px; line-height: 1.7; margin-top: 9px; }
+.landmark-detail>small { display: block; border-top: 1px solid #f0e8f6; padding-top: 9px; margin-top: 12px; font-size: 9px; color: #a18db3; }
+.astana-map.map-expanded { position: fixed; inset: 12px; width: auto; height: auto; z-index: 100; border: 1px solid #d4c9e3; border-radius: 14px; box-shadow: 0 0 0 30px #22182a88, 0 20px 90px #29193844; }
+.map-expanded .astana-illustration { width: 100%; height: 100%; }
+.map-expanded .astana-map-heading { top: 28px; left: 30px; }
+.map-expanded .map-top-controls { top: 28px; right: 30px; }
+.map-expanded .landmark-detail { left: 30px; }
+.metrics-overview { height: 690px; padding: 40px 35px; }
+.metrics-overview .metrics-heading { margin-bottom: 32px; }
+.district-comparison { padding: 24px 15px; margin-bottom: 8px; }
+.district-comparison>span { width: 110px; font-size: 13px; }
+.district-comparison small { font-size: 10px; }
+.district-comparison>strong { font-size: 17px; width: 75px; }
+.comparison-track { height: 19px; }
+.comparison-track i, .comparison-track b { height: 7px; }
+.comparison-track b { top: 11px; }
+.district-panel .district-metrics { gap: 22px; }
+.district-panel .metric-label { flex-direction: row; font-size: 10px; }
+.district-panel .metric-number>span { display: inline; margin-left: 7px; }
+
+@media (min-width: 1650px) {
+  .dashboard-grid { grid-template-columns: minmax(0, 1fr) 285px; gap: 20px; }
+  .astana-map { height: 750px; }
+  .metrics-overview { height: 750px; }
+  .plan-slot { min-height: 65px; }
+  .plan-budget { margin-bottom: 20px; }
+  .measure-list { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+}
+
+/* The source map is prerendered for navigation; five exact SVG overlays remain interactive. */
+.geographic-map { background: #f5f4f7; }
+.geographic-map::after { content: ""; position: absolute; inset: 0; background: linear-gradient(#faf9fcf5, #faf9fc00 30%, #faf9fc00 82%, #faf9fcf5); pointer-events: none; }
+.geographic-map .astana-illustration { touch-action: none; }
+.astana-basemap { filter: saturate(.32); }
+.geographic-map .astana-map-heading { z-index: 3; }
+.geographic-map .astana-map-heading>strong { font-size: 21px; }
+.map-navigation { position: absolute; left: 23px; right: 23px; top: 111px; z-index: 4; display: flex; flex-wrap: wrap; gap: 9px; align-items: center; pointer-events: none; }
+.map-district-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+.map-district-chips button, .map-navigation select { pointer-events: auto; background: #fffffff0; border: 1px solid #e3dcea; box-shadow: 0 2px 8px #33244a08; color: #6c5b7b; border-radius: 6px; font-size: 10px; min-height: 31px; padding: 0 10px; }
+.map-district-chips button { display: flex; align-items: center; gap: 6px; }
+.map-district-chips button i { width: 5px; height: 5px; border-radius: 50%; }
+.map-district-chips button[aria-pressed="true"] { background: #7547d0; color: white; border-color: #7547d0; }
+.map-district-chips button[aria-pressed="true"] i { background: #e3d6ff !important; }
+.map-navigation select { max-width: 180px; margin-left: auto; }
+.real-district { fill-opacity: .095; stroke-width: 1.3; stroke-opacity: .65; cursor: pointer; transition: fill-opacity .15s, stroke-opacity .15s; outline: none; }
+.real-district:hover, .real-district:focus-visible { fill-opacity: .21; stroke-opacity: 1; stroke-width: 2.5; }
+.real-district.is-selected { fill-opacity: .21; stroke-opacity: 1; stroke-width: 2.4; }
+.real-landmark { cursor: pointer; outline: none; }
+.real-landmark:hover>circle:first-of-type, .real-landmark:focus-visible>circle:first-of-type { stroke: #5422af; stroke-width: 3; }
+.geographic-map .astana-compass, .geographic-map .astana-map-bottom { z-index: 3; }
+.geographic-map .astana-compass { bottom: 114px; }
+.geographic-map .astana-map-bottom { pointer-events: auto; max-width: 55%; }
+.geographic-map .astana-map-bottom p { line-height: 1.5; max-width: 320px; }
+.geographic-map .astana-map-bottom a { display: inline-block; margin-top: 5px; font-size: 8px; color: #82728c; }
+.geographic-map .landmark-detail { top: 161px; }
+.map-loading { position: absolute; z-index: 5; left: 50%; top: 50%; transform: translate(-50%, -50%); padding: 13px 18px; border-radius: 8px; background: #fffffff2; border: 1px solid #dfd4ec; font-size: 12px; color: #766087; }
+.map-loading button { display: block; margin-top: 10px; padding: 7px 14px; border-radius: 5px; background: #7547d0; color: white; }
+@media (max-width: 1150px) { .map-navigation select { margin-left: 0; } .map-navigation { top: 112px; left: 18px; right: 18px; } .geographic-map .landmark-detail { top: 190px; } }
+@media (max-width: 600px) {
+  .geographic-map .astana-map-heading>strong { font-size: 17px; max-width: 200px; }
+  .geographic-map .astana-map-heading>span:last-child { display: none; }
+  .map-navigation { left: 12px; right: 12px; top: 90px; gap: 7px; }
+  .map-district-chips { gap: 4px; }
+  .map-district-chips button { font-size: 9px; padding: 0 7px; min-height: 28px; }
+  .map-navigation select { font-size: 9px; min-height: 28px; }
+  .geographic-map .astana-map-bottom { bottom: 12px; max-width: 60%; }
+  .geographic-map .astana-map-bottom p { max-width: 180px; }
+  .geographic-map .astana-map-bottom a { font-size: 7px; }
+  .geographic-map .map-tools { bottom: 87px; }
+  .geographic-map .astana-compass { bottom: 110px; }
+  .geographic-map .landmark-detail { top: auto; bottom: 130px; }
+}
+@media (max-width: 1150px) {
+  main { padding-inline: 20px; }
+  .dashboard-grid { grid-template-columns: minmax(0, 1fr) 235px; gap: 14px; }
+  .astana-map { height: 590px; }
+  .metrics-overview { height: 590px; padding: 25px 20px; }
+  .district-comparison { padding: 18px 10px; }
+  .astana-map-heading { left: 18px; top: 20px; }
+  .astana-map-heading>strong { font-size: 18px; }
+  .astana-map-heading>span:last-child { max-width: 180px; line-height: 1.5; }
+  .map-top-controls { right: 14px; top: 18px; }
+  .city-map-mode { display: none; }
+  .astana-map-bottom>div { font-size: 9px; }
+  .astana-map-bottom>div>span:last-child { display: none; }
+  .astana-map-bottom>p { max-width: 160px; line-height: 1.5; }
+  .measure-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .plan-list { padding-inline: 12px; }
+  .plan-slot { min-height: 53px; padding: 8px; }
+  .plan-actions { margin-inline: 12px; }
+}
+@media (max-width: 900px) {
+  .dashboard-grid { grid-template-columns: minmax(0, 1fr); }
+  .map-panel { grid-column: 1; grid-row: 1; }
+  .district-panel { grid-column: 1; grid-row: 2; }
+  .plan-panel { grid-column: 1; grid-row: 3; }
+  .catalog-panel { grid-column: 1; grid-row: 4; }
+  .advisor-panel { grid-column: 1; grid-row: 5; }
+  .astana-map { height: 620px; }
+  .plan-panel { padding: 18px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 10px 20px; }
+  .plan-panel>.panel-heading { grid-column: 1; padding: 0; }
+  .plan-budget, .plan-hint, .plan-notice { grid-column: 1; margin: 0; }
+  .plan-list { grid-column: 2; grid-row: 1 / 6; padding: 0; }
+  .plan-actions { grid-column: 1; grid-row: auto; margin: 0; }
+  .score-note { display: none; }
+  .advisor-panel { min-height: auto; }
+  .measure-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .map-top-controls { right: 20px; }
+  .astana-map-heading>strong { font-size: 22px; }
+}
+@media (max-width: 600px) {
+  main { padding: 17px 12px 0; }
+  .topbar { padding-inline: 12px; }
+  .page-heading { gap: 10px; margin-bottom: 15px; }
+  .page-heading h1 { font-size: 26px; }
+  .page-heading .eyebrow { font-size: 7px; letter-spacing: 1.2px; }
+  .summary-strip { padding: 0; margin-bottom: 15px; }
+  .summary-item { padding: 12px; min-height: 65px; }
+  .summary-value { font-size: 20px; }
+  .dashboard-grid { display: grid; gap: 13px; }
+  .map-panel-toolbar { padding-inline: 11px; }
+  .view-tabs { gap: 12px; }
+  .view-tabs button { font-size: 10px; }
+  .map-catalog-link { font-size: 0; gap: 0; }
+  .map-catalog-link svg { width: 18px; height: 18px; }
+  .astana-map { height: 480px; }
+  .astana-illustration { width: 100%; left: 0; }
+  .astana-map-heading { left: 14px; top: 17px; gap: 6px; }
+  .map-city-kicker { font-size: 7px; }
+  .astana-map-heading>strong { font-size: 17px; max-width: 165px; }
+  .astana-map-heading>span:last-child { font-size: 9px; max-width: 160px; }
+  .map-top-controls { right: 12px; top: 16px; }
+  .map-expand-button { padding: 7px; }
+  .map-expand-button>span { display: none; }
+  .astana-compass { left: 16px; bottom: 91px; }
+  .astana-map-bottom { left: 14px; bottom: 17px; }
+  .astana-map-bottom>p { max-width: 130px; font-size: 7px; }
+  .astana-map .map-tools { right: 10px; bottom: 20px; padding: 2px; }
+  .astana-map .map-tools .icon-button { width: 24px; }
+  .astana-map .map-tools>.zoom-value { width: 29px; font-size: 8px; }
+  .landmark-detail { left: 12px; right: 12px; top: auto; bottom: 84px; width: auto; padding: 12px 15px; }
+  .landmark-detail>h3 { margin-top: 5px; font-size: 14px; }
+  .landmark-detail>p { margin-top: 5px; font-size: 9px; }
+  .landmark-detail>small { margin-top: 6px; padding-top: 6px; }
+  .astana-map.map-expanded { inset: 6px; }
+  .map-expanded .astana-map-heading { left: 17px; top: 18px; }
+  .map-expanded .map-top-controls { right: 15px; top: 15px; }
+  .map-expanded .landmark-detail { left: 12px; }
+  .district-panel .district-metrics { gap: 7px; }
+  .district-panel .metric-label { flex-direction: column; font-size: 8px; }
+  .district-panel .metric-number>span { display: block; margin-left: 0; }
+  .plan-panel { display: block; padding: 0 0 15px; }
+  .plan-panel>.panel-heading { padding: 18px 15px; }
+  .plan-budget { margin: 0 15px 16px; }
+  .plan-list { padding-inline: 15px; }
+  .plan-hint, .plan-notice { margin: 12px 17px 0; }
+  .plan-actions { margin: 15px 15px 0; }
+  .catalog-panel .panel-heading { padding: 18px 15px; }
+  .catalog-panel .panel-heading h2 { font-size: 14px; }
+  .catalog-panel .search-box { display: flex; width: auto; margin: 0 15px 12px; }
+  .catalog-panel .category-filter { display: flex; width: auto; margin: 0 15px 15px; }
+  .catalog-caption { margin-inline: 16px; }
+  .measure-list { grid-template-columns: minmax(0, 1fr); max-height: 540px; padding: 0 15px 15px; }
+  .measure-card>p { min-height: auto; }
+  .catalog-footer { flex-wrap: wrap; gap: 10px; padding-inline: 15px; }
+  .catalog-district-picker { flex-basis: 100%; font-size: 9px; }
+  .catalog-budget-summary { margin-left: 0; font-size: 9px; }
+  .catalog-footer>a { margin-left: auto; font-size: 9px; }
+  .metrics-overview { height: 440px; padding: 20px 12px; }
+  .metrics-overview .metrics-heading { margin-bottom: 20px; }
+  .district-comparison { padding: 13px 6px; }
+  .district-comparison>span { width: 70px; font-size: 11px; }
+  .district-comparison>strong { width: 57px; font-size: 13px; }
+  .district-comparison small { font-size: 8px; }
+}
+
+/* Keep map-specific mobile controls above the bottom attribution strip. */
+@media (max-width: 600px) {
+  .geographic-map .map-tools { bottom: 87px; }
+  .geographic-map .astana-map-bottom { bottom: 12px; }
+  .geographic-map .landmark-detail { top: auto; bottom: 130px; }
+}

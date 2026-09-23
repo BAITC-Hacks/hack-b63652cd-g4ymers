@@ -1,0 +1,163 @@
+/* The map owns the viewport. Interface panels never reserve layout space. */
+body:has(.immersive-shell) { overflow: hidden; }
+.immersive-shell { height: 100dvh; min-height: 0; overflow: hidden; }
+.immersive-shell [hidden] { display: none !important; }
+.immersive-shell .viewport-map { position: fixed; inset: 0; width: 100%; height: 100dvh; border: 0; border-radius: 0; z-index: 0; }
+.viewport-map .astana-map-heading, .viewport-map .map-top-controls { display: none; }
+.viewport-map::after { background: linear-gradient(#faf9fc70, transparent 24%, transparent 85%, #faf9fc70); }
+.viewport-map .map-navigation { top: 109px; left: 50%; right: auto; width: max-content; max-width: calc(100% - 40px); transform: translateX(-50%); flex-wrap: nowrap; gap: 12px; }
+.viewport-map .map-district-chips { padding: 5px; border-radius: 10px; background: #ffffffeb; box-shadow: 0 4px 20px #3025450d; flex-wrap: nowrap; }
+.viewport-map .map-district-chips button { border: 0; box-shadow: none; background: transparent; font-size: 11px; padding-inline: 12px; min-height: 33px; }
+.viewport-map .map-district-chips button[aria-pressed="true"] { background: #7547d0; color: white; }
+.viewport-map .map-navigation select { min-height: 43px; border-radius: 10px; font-size: 11px; }
+.viewport-map .astana-compass { left: 24px; bottom: 83px; }
+.viewport-map .astana-map-bottom { left: 24px; bottom: 18px; max-width: 290px; }
+.viewport-map .astana-map-bottom>div { font-size: 11px; }
+.viewport-map .astana-map-bottom>div>span, .viewport-map .astana-map-bottom>p { display: none; }
+.viewport-map .map-tools { right: 23px; bottom: 77px; border-radius: 10px; padding: 7px; box-shadow: 0 6px 25px #30254512; }
+.viewport-map .map-tools .icon-button { width: 31px; height: 31px; }
+.viewport-map .landmark-detail { left: auto; right: 23px; top: 175px; width: 245px; }
+.map-ui-hidden .map-navigation, .map-ui-hidden .astana-compass, .map-ui-hidden .map-tools, .map-ui-hidden .landmark-detail { display: none; }
+.map-interface { position: fixed; inset: 0; z-index: 10; padding: 0; margin: 0; max-width: none; pointer-events: none; }
+.floating-brand, .floating-actions, .immersive-shell .summary-strip, .city-dock, .floating-panel { pointer-events: auto; background: #fffffff2; border: 1px solid #e7e1ed; box-shadow: 0 8px 35px #30254510; backdrop-filter: blur(16px); }
+.floating-brand { position: absolute; top: 20px; left: 20px; height: 70px; padding: 13px 18px 13px 13px; display: flex; gap: 12px; align-items: center; border-radius: 14px; }
+.floating-brand .brand-mark { width: 39px; height: 41px; border-radius: 11px; }
+.floating-brand .eyebrow { font-size: 7px; letter-spacing: 1px; margin: 0 0 5px; color: #9284a3; }
+.floating-brand h1 { font-size: 23px; gap: 5px; letter-spacing: -.9px; white-space: nowrap; }
+.floating-actions { position: absolute; top: 20px; right: 20px; height: 70px; padding: 10px; display: flex; align-items: center; gap: 6px; border-radius: 14px; }
+.floating-actions .icon-button { width: 33px; height: 36px; }
+.immersive-shell .summary-strip { position: absolute; top: 20px; left: 324px; right: 127px; height: 70px; margin: 0; padding: 0; border-radius: 14px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.immersive-shell .summary-item { min-height: 0; padding: 12px 18px; gap: 10px; border-bottom: 0; }
+.immersive-shell .summary-icon, .immersive-shell .mini-budget, .immersive-shell .decision-dots { display: none; }
+.immersive-shell .summary-label { font-size: 9px; white-space: nowrap; }
+.immersive-shell .summary-value { font-size: 23px; margin-top: 6px; line-height: 1; }
+.immersive-shell .summary-value>span { font-size: 9px; }
+.immersive-shell .summary-item:last-child { border-right: 0; }
+.city-dock { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); padding: 7px; display: flex; align-items: center; gap: 5px; border-radius: 16px; background: #241e30f5; border-color: #41334f; color: #b9aacd; box-shadow: 0 8px 30px #21142c26; }
+.city-dock>button { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 13px 15px; min-height: 45px; white-space: nowrap; border-radius: 9px; font-size: 11px; }
+.city-dock>button:hover, .city-dock>button[aria-expanded="true"] { background: #493358; color: #f6eaff; }
+.city-dock>button.dock-primary { background: #8657dc; color: white; }
+.city-dock>button.dock-primary:hover, .city-dock>button.dock-primary[aria-expanded="true"] { background: #9b6aef; }
+.city-dock b { padding: 3px 5px; background: #ffffff13; border-radius: 4px; font-size: 9px; font-weight: 400; }
+.dock-divider { width: 1px; height: 25px; margin: 0 3px; background: #554563; }
+.map-data-note { position: absolute; right: 25px; bottom: 126px; font-size: 8px; color: #92829e; display: flex; gap: 5px; align-items: center; }
+.interface-toggle { position: fixed; right: 23px; bottom: 20px; z-index: 15; display: flex; gap: 7px; align-items: center; padding: 11px 13px; border: 1px solid #e4dce9; border-radius: 10px; background: #fffffff0; color: #776088; font-size: 10px; box-shadow: 0 4px 15px #3025450b; }
+.interface-hidden .interface-toggle { background: #2a2138; color: #f4e9ff; border-color: #4d3a64; }
+.immersive-shell .floating-panel { position: absolute; top: 172px; bottom: 103px; width: 330px; height: auto; min-height: 0; max-height: none; left: 20px; right: auto; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; border-radius: 16px; z-index: 20; margin: 0; }
+.overlay-close { position: absolute; top: 14px; right: 13px; z-index: 2; background: #f6f1fb; }
+.immersive-shell .floating-panel>.panel-heading { padding: 21px 20px 17px; padding-right: 49px; }
+.immersive-shell .floating-panel>.panel-heading h2 { font-size: 16px; }
+.immersive-shell .floating-panel>.panel-heading p { font-size: 10px; }
+.immersive-shell .floating-panel .count-badge { display: none; }
+.immersive-shell .plan-panel { left: auto; right: 20px; display: block; padding: 0 0 16px; }
+.immersive-shell .plan-list { display: flex; padding-inline: 18px; gap: 9px; }
+.immersive-shell .plan-slot { min-height: 61px; }
+.immersive-shell .plan-slot h3 { font-size: 11px; }
+.immersive-shell .plan-slot small button { text-decoration: underline; text-underline-offset: 3px; }
+.immersive-shell .score-note { display: none; }
+.immersive-shell .plan-budget { margin: 0 18px 16px; }
+.immersive-shell .plan-hint, .immersive-shell .plan-notice { margin: 13px 20px 0; }
+.immersive-shell .plan-actions { margin: 16px 18px 0; }
+.immersive-shell .catalog-panel { display: flex; flex-direction: column; overflow: hidden; padding: 0; }
+.immersive-shell .catalog-panel>.panel-heading { flex-shrink: 0; }
+.immersive-shell .catalog-panel .search-box { display: flex; width: auto; margin: 0 18px 11px; flex-shrink: 0; }
+.immersive-shell .catalog-panel .category-filter { display: flex; width: auto; margin: 0 18px 10px; flex-shrink: 0; }
+.immersive-shell .catalog-caption { margin: 0 19px 10px; }
+.immersive-shell .measure-list { display: flex; flex-direction: column; gap: 10px; height: auto; min-height: 0; max-height: none; flex: 1; padding: 0 15px 15px; overflow-y: auto; overscroll-behavior: contain; }
+.immersive-shell .measure-card { flex-shrink: 0; padding: 14px; }
+.immersive-shell .measure-card h3 { font-size: 13px; }
+.immersive-shell .measure-card>p { min-height: 0; }
+.immersive-shell .catalog-footer { flex-shrink: 0; flex-wrap: wrap; padding: 11px 15px; gap: 9px; }
+.immersive-shell .catalog-district-picker { flex-basis: 100%; justify-content: space-between; font-size: 9px; }
+.immersive-shell .catalog-district-picker select { max-width: 110px; }
+.immersive-shell .catalog-budget-summary { margin-left: 0; font-size: 9px; }
+.catalog-to-plan { margin-left: auto; display: flex; align-items: center; gap: 5px; font-size: 10px; color: #7952b4; }
+.catalog-notice { color: #785594; background: #f5effb; margin: 0 18px 9px; font-size: 10px; line-height: 1.5; border-radius: 6px; padding: 8px; }
+.catalog-notice:empty { display: none; }
+.immersive-shell .metrics-overview { width: 430px; bottom: auto; max-height: calc(100dvh - 280px); padding: 25px 20px; }
+.immersive-shell .metrics-heading { margin-bottom: 20px; padding-right: 25px; }
+.immersive-shell .district-comparison { padding: 17px 8px; gap: 12px; }
+.immersive-shell .district-comparison>span { width: 83px; font-size: 12px; }
+.immersive-shell .district-comparison>strong { width: 65px; font-size: 14px; }
+.immersive-shell .district-comparison small { font-size: 9px; }
+.immersive-shell .district-panel { bottom: auto; width: 370px; max-height: calc(100dvh - 280px); padding: 25px 21px 20px; }
+.immersive-shell .district-heading { flex-wrap: wrap; padding-right: 25px; }
+.immersive-shell .district-score { display: flex; align-items: baseline; gap: 10px; }
+.immersive-shell .district-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.immersive-shell .district-panel .metric-label { flex-direction: row; font-size: 11px; }
+.immersive-shell .district-panel .metric-number>span { display: inline; }
+.immersive-shell .metrics-explainer { margin-top: 20px; line-height: 1.6; }
+.immersive-shell .advisor-panel { bottom: auto; display: flex; padding: 26px 20px 22px; padding-right: 42px; }
+.immersive-shell .advisor-content>p { font-size: 12px; line-height: 1.8; }
+.immersive-shell .advisor-title h2 { font-size: 14px; }
+
+@media (max-width: 1100px) {
+  .floating-brand { padding: 12px; gap: 9px; }
+  .floating-brand h1 { font-size: 20px; }
+  .floating-brand .eyebrow { font-size: 6px; }
+  .immersive-shell .summary-strip { left: 284px; }
+  .immersive-shell .summary-item { padding: 12px; }
+  .immersive-shell .summary-item:nth-child(3) { display: none; }
+  .immersive-shell .summary-strip { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .immersive-shell .summary-value { font-size: 21px; }
+  .city-dock>button { padding-inline: 10px; gap: 6px; }
+  .interface-toggle>span { display: none; }
+  .map-data-note { display: none; }
+  .viewport-map .astana-map-bottom { max-width: 150px; }
+}
+@media (max-width: 760px) {
+  .immersive-shell:not(.interface-hidden):has(.floating-panel:not([hidden])) .interface-toggle { display: none; }
+  .floating-brand { top: 10px; left: 10px; height: 49px; padding: 8px 11px; border-radius: 10px; }
+  .floating-brand .brand-mark { height: 31px; width: 31px; border-radius: 8px; }
+  .floating-brand .brand-mark svg { width: 20px; }
+  .floating-brand h1 { font-size: 18px; }
+  .floating-brand .eyebrow { font-size: 5px; letter-spacing: .8px; margin-bottom: 3px; }
+  .floating-actions { top: 10px; right: 10px; height: 49px; padding: 5px; border-radius: 10px; gap: 0; }
+  .floating-actions .icon-button { width: 29px; }
+  .immersive-shell .summary-strip { top: 69px; left: 10px; right: 10px; height: 62px; border-radius: 10px; }
+  .immersive-shell .summary-item { padding: 9px 12px; border-right: 1px solid #eae4f0; }
+  .immersive-shell .summary-item:last-child { border-right: 0; }
+  .immersive-shell .summary-label { font-size: 8px; }
+  .immersive-shell .summary-value { font-size: 20px; }
+  .immersive-shell .summary-value>span { font-size: 8px; }
+  .immersive-shell .score-delta { padding: 3px; }
+  .viewport-map .map-navigation { top: 143px; left: 10px; right: 10px; max-width: none; width: auto; transform: none; flex-wrap: wrap; gap: 8px; }
+  .viewport-map .map-district-chips { width: 100%; gap: 1px; justify-content: space-between; padding: 4px; border-radius: 8px; }
+  .viewport-map .map-district-chips button { font-size: 10px; padding-inline: 7px; min-height: 30px; gap: 4px; }
+  .viewport-map .map-navigation select { min-height: 32px; font-size: 10px; border-radius: 8px; }
+  .viewport-map .map-tools { right: 10px; bottom: 135px; padding: 3px; }
+  .viewport-map .map-tools .icon-button { width: 26px; height: 28px; }
+  .viewport-map .astana-compass { left: 17px; bottom: 139px; }
+  .viewport-map .astana-map-bottom { left: 13px; bottom: 85px; max-width: 210px; }
+  .viewport-map .landmark-detail { top: auto; bottom: 190px; left: 12px; right: 12px; width: auto; }
+  .interface-toggle { right: 10px; bottom: 88px; padding: 8px; }
+  .interface-hidden .interface-toggle { bottom: 20px; }
+  .interface-hidden .interface-toggle>span { display: block; }
+  .interface-hidden .astana-map-bottom { bottom: 20px; }
+  .city-dock { bottom: max(10px, env(safe-area-inset-bottom)); left: 10px; right: 10px; transform: none; padding: 5px; gap: 2px; border-radius: 12px; justify-content: space-between; }
+  .city-dock>button { flex: 1; min-width: 0; height: 51px; padding: 7px 5px; flex-direction: column; gap: 4px; font-size: 8px; position: relative; }
+  .city-dock>button svg { width: 18px; height: 18px; }
+  .city-dock b { position: absolute; right: 3px; top: 3px; font-size: 7px; padding: 1px 3px; }
+  .dock-divider { display: none; }
+  .immersive-shell .floating-panel { top: auto; bottom: 83px; left: 10px; right: 10px; width: auto; max-height: calc(100dvh - 285px); border-radius: 15px; }
+  .immersive-shell .catalog-panel { height: calc(100dvh - 285px); }
+  .immersive-shell .floating-panel>.panel-heading { padding: 16px 46px 12px 17px; }
+  .immersive-shell .floating-panel>.panel-heading h2 { font-size: 15px; }
+  .immersive-shell .floating-panel>.panel-heading p { display: none; }
+  .immersive-shell .catalog-panel .search-box { margin: 0 15px 8px; }
+  .immersive-shell .catalog-panel .category-filter { margin: 0 15px 8px; }
+  .immersive-shell .catalog-panel .category-filter button { height: 29px; }
+  .immersive-shell .catalog-caption { margin-bottom: 8px; font-size: 9px; }
+  .immersive-shell .catalog-notice { margin: 0 15px 8px; padding: 6px 8px; font-size: 9px; }
+  .immersive-shell .catalog-footer { padding: 8px 13px; gap: 5px; }
+  .immersive-shell .catalog-district-picker { font-size: 9px; }
+  .immersive-shell .catalog-budget-summary { font-size: 8px; }
+  .immersive-shell .district-panel, .immersive-shell .metrics-overview { padding: 23px 17px 17px; }
+  .immersive-shell .district-comparison { padding: 12px 5px; gap: 7px; }
+  .immersive-shell .district-comparison>span { width: 77px; }
+}
+@media (max-height: 650px) and (min-width: 761px) {
+  .immersive-shell .floating-panel { top: 110px; bottom: 96px; }
+  .immersive-shell .metrics-overview, .immersive-shell .district-panel { max-height: calc(100dvh - 210px); }
+  .viewport-map .map-navigation { top: 110px; }
+}

@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./map-workspace.css";
+import "./immersive-map.css";
 
 export const metadata: Metadata = {
   title: "Аким на 5 часов — Astana City Lab",
