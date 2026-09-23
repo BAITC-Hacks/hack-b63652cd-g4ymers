@@ -1,0 +1,4 @@
+.local/
+.env
+backend/target/
+backend/.m2/

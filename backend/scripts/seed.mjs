@@ -1,0 +1,11 @@
+import {districts, measures, metricNames} from '../../akim/lib/simulation.ts';
+import {writeFileSync} from 'node:fs';
+const quote = x => `'${String(x).replaceAll("'", "''")}'`;
+const weights = [.10,.10,.09,.11,.11,.11,.09,.09,.10,.10];
+let sql = '-- Synthetic hackathon dataset, not official city statistics. Source: Датасет районов.pdf.\n';
+sql += 'CREATE TABLE metrics (code varchar(2) PRIMARY KEY, name varchar(100) NOT NULL, weight numeric(4,3) NOT NULL, ordinal int UNIQUE NOT NULL);\n';
+Object.entries(metricNames).forEach(([code,name],i) => sql += `INSERT INTO metrics VALUES (${quote(code)},${quote(name)},${weights[i]},${i});\n`);
+districts.forEach((d,i) => sql += `INSERT INTO districts VALUES (${quote(d.id)},${quote(d.name)},${d.population},${quote(d.note)},${quote(JSON.stringify(d.values))},${i});\n`);
+measures.forEach((m,i) => sql += `INSERT INTO measures VALUES (${quote(m.id)},${quote(m.name)},${quote(m.description)},${quote(m.category)},${m.cost},${m.lag},${m.city},${quote(JSON.stringify(m.effects))},${i});\n`);
+writeFileSync(new URL('../src/main/resources/db/migration/V2__hackathon_dataset.sql',import.meta.url), sql);
+writeFileSync(new URL('../src/test/resources/dataset.json',import.meta.url), JSON.stringify({districts,measures,metrics:Object.entries(metricNames).map(([code,name],i)=>({code,name,weight:weights[i]}))},null,2));
