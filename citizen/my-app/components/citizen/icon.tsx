@@ -1,6 +1,6 @@
 import type { SVGProps } from "react";
 
-type IconName = "home" | "map" | "plus" | "reports" | "user" | "arrow" | "chevron" | "search" | "filter" | "pin" | "check" | "clock" | "camera" | "close" | "menu" | "shield" | "leaf" | "bus" | "building" | "service" | "alert" | "send" | "back";
+type IconName = "home" | "map" | "plus" | "reports" | "user" | "arrow" | "chevron" | "search" | "filter" | "pin" | "check" | "clock" | "camera" | "qr" | "close" | "menu" | "shield" | "leaf" | "bus" | "building" | "service" | "alert" | "send" | "back";
 
 const paths: Record<IconName, React.ReactNode> = {
   home: <><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1Z"/><path d="M9 21h6"/></>,
@@ -16,6 +16,7 @@ const paths: Record<IconName, React.ReactNode> = {
   check: <path d="m5 12 4 4L19 6"/>,
   clock: <><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3.5 2"/></>,
   camera: <><path d="M4 8h3l1.5-2h7L17 8h3v11H4Z"/><circle cx="12" cy="13" r="3.5"/></>,
+  qr: <><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4z"/><path d="M14 14h2v2h-2zM18 14h2M14 18h2v2M18 18h2v2"/></>,
   close: <><path d="m6 6 12 12M18 6 6 18"/></>,
   menu: <><path d="M4 7h16M4 12h16M4 17h16"/></>,
   shield: <path d="M12 3 19 6v5c0 4.5-2.7 8-7 10-4.3-2-7-5.5-7-10V6Z"/>,

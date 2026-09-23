@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { CitizenIcon } from "@/components/citizen/icon";
+import { OnboardingTour } from "@/components/citizen/onboarding";
 
 const nav = [
   { href: "/citizen", label: "Главная", icon: "home" as const },
@@ -16,14 +17,15 @@ export function CitizenShell({ children }: { children: React.ReactNode }) {
   return <div className="citizen-app">
     <header className="citizen-header">
       <Link className="citizen-brand" href="/citizen" aria-label="Қалаға көмект — на главную"><span className="citizen-brand-mark"><span /></span><span><strong>Қалаға көмект</strong><small>Город рядом</small></span></Link>
-      <Link className="citizen-header-action" href="/report/ASTANA-NURA-LIGHT-001"><CitizenIcon name="plus" size={18} /> Сообщить</Link>
+      <div className="citizen-header-actions"><Link className="citizen-help-link" href="/citizen/help">Помощь</Link><Link className="citizen-header-action" href="/citizen/scan"><CitizenIcon name="qr" size={18} /> Сканировать</Link></div>
     </header>
     <main className="citizen-main">{children}</main>
     <nav className="citizen-bottom-nav" aria-label="Навигация жителя">
       {nav.slice(0, 2).map((item) => <Link key={item.href} className={pathname === item.href ? "active" : ""} href={item.href}><CitizenIcon name={item.icon} size={21} /><span>{item.label}</span></Link>)}
-      <Link className="citizen-report-fab" href="/report/ASTANA-NURA-LIGHT-001" aria-label="Сообщить о проблеме"><span><CitizenIcon name="plus" size={24} /></span><small>Сообщить</small></Link>
+      <Link className="citizen-report-fab" href="/citizen/scan" aria-label="Сканировать QR-код"><span><CitizenIcon name="qr" size={24} /></span><small>Сканировать</small></Link>
       {nav.slice(2).map((item) => <Link key={item.href} className={pathname.startsWith(item.href) ? "active" : ""} href={item.href}><CitizenIcon name={item.icon} size={21} /><span>{item.label}</span></Link>)}
     </nav>
+    <OnboardingTour />
   </div>;
 }
 
