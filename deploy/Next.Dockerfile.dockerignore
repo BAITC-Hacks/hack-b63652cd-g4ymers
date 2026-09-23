@@ -1,0 +1,14 @@
+**
+!akim/
+!akim/**
+!citizen/
+!citizen/my-app/
+!citizen/my-app/**
+**/node_modules
+**/.next
+**/.git
+**/.local
+**/.env
+**/.env.*
+**/*.log
+**/tsconfig.tsbuildinfo

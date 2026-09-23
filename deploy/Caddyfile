@@ -1,0 +1,19 @@
+{
+    email {$ACME_EMAIL}
+}
+
+{$AKIM_DOMAIN} {
+    encode zstd gzip
+    reverse_proxy akim:3000 {
+        header_up Host {host}
+        header_up X-Forwarded-Proto {scheme}
+    }
+}
+
+{$CITIZEN_DOMAIN} {
+    encode zstd gzip
+    reverse_proxy citizen:3000 {
+        header_up Host {host}
+        header_up X-Forwarded-Proto {scheme}
+    }
+}

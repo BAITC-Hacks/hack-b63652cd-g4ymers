@@ -1,0 +1,107 @@
+name: eakimai
+
+services:
+  db:
+    image: postgres:18
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME:-hackalem}
+      POSTGRES_USER: hackalem
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:?Set DATABASE_PASSWORD}
+    volumes:
+      - postgres-data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hackalem -d \"$$POSTGRES_DB\""]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    networks: [backend]
+
+  api:
+    image: eakimai-api:${APP_VERSION:-local}
+    build:
+      context: ../backend
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: jdbc:postgresql://db:5432/${DATABASE_NAME:-hackalem}
+      DATABASE_USER: hackalem
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD:?Set DATABASE_PASSWORD}
+      AKIM_EMAIL: ${AKIM_EMAIL:?Set AKIM_EMAIL}
+      AKIM_PASSWORD: ${AKIM_PASSWORD:?Set AKIM_PASSWORD}
+      CORS_ORIGINS: https://${AKIM_DOMAIN:?Set AKIM_DOMAIN},https://${CITIZEN_DOMAIN:?Set CITIZEN_DOMAIN}
+      DEMO_RESIDENTS: ${DEMO_RESIDENTS:-false}
+      DEMO_RESIDENT_PASSWORD: ${DEMO_RESIDENT_PASSWORD:-}
+    depends_on:
+      db:
+        condition: service_healthy
+    networks: [backend]
+
+  akim:
+    image: eakimai-akim:${APP_VERSION:-local}
+    build:
+      context: ..
+      dockerfile: deploy/Next.Dockerfile
+      args:
+        APP_DIR: akim
+    restart: unless-stopped
+    environment:
+      BACKEND_URL: http://api:8080
+    depends_on: [api]
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    networks: [frontend, backend]
+
+  citizen:
+    image: eakimai-citizen:${APP_VERSION:-local}
+    build:
+      context: ..
+      dockerfile: deploy/Next.Dockerfile
+      args:
+        APP_DIR: citizen/my-app
+    restart: unless-stopped
+    environment:
+      BACKEND_URL: http://api:8080
+    depends_on: [api]
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/citizen').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    networks: [frontend, backend]
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    environment:
+      AKIM_DOMAIN: ${AKIM_DOMAIN:?Set AKIM_DOMAIN}
+      CITIZEN_DOMAIN: ${CITIZEN_DOMAIN:?Set CITIZEN_DOMAIN}
+      ACME_EMAIL: ${ACME_EMAIL:?Set ACME_EMAIL}
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on:
+      akim:
+        condition: service_healthy
+      citizen:
+        condition: service_healthy
+    networks: [frontend]
+
+networks:
+  frontend:
+  backend:
+    internal: true
+
+volumes:
+  postgres-data:
+  caddy-data:
+  caddy-config:
