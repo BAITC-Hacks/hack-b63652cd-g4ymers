@@ -39,6 +39,12 @@ test("akim proxy authenticates, protects mutations and persists server scenarios
     assert.equal(final.status, 200); assert.equal((await final.json()).status, "FINAL");
     assert.equal((await call(`akim/scenarios/${draft.id}`, "PUT", { name: "Locked", selections, version: saved.version + 1 })).status, 409);
     assert.equal((await call("akim/problems?district=nura&status=NEW")).status, 200);
+    const insights = await (await call("akim/districts/nura/insights")).json();
+    assert.equal(insights.districtId, "nura");
+    assert.ok(insights.rating.score >= 0 && insights.rating.score <= 100);
+    assert.ok(Math.abs(insights.rating.baseline - 49.18) < .000001);
+    assert.ok(insights.trainingSamples >= 32);
+    assert.ok(Array.isArray(insights.recommendations));
   } finally { assert.equal((await call("auth/logout", "POST", {})).status, 204); }
   assert.equal((await call("auth/me")).status, 401);
 });

@@ -49,6 +49,6 @@ export function LocationPermission({ compact = false, onLocation }: { compact?: 
   }, []);
 
   if (status === "checking") return <div className={`location-permission ${compact ? "compact" : ""}`}><span className="location-permission-icon"><CitizenIcon name="pin" size={17} /></span><div><strong>Проверяем ваше местоположение…</strong><p>Координаты нужны только для подтверждения места.</p></div></div>;
-  if (status === "granted") return <div className={`location-permission granted ${compact ? "compact" : ""}`}><span className="location-permission-icon"><CitizenIcon name="check" size={17} /></span><div><strong>Местоположение подтверждено</strong><p>Точная геолокация не публикуется другим жителям.</p></div></div>;
+  if (status === "granted") return <div className={`location-permission granted ${compact ? "compact" : ""}`}><span className="location-permission-icon"><CitizenIcon name="check" size={17} /></span><div><strong>Координаты получены</strong><p>Сравним их с адресом QR-объекта. Координаты не публикуются.</p><button className="location-retry" onClick={requestLocation}>Обновить геолокацию</button></div></div>;
   return <div className={`location-permission ${compact ? "compact" : ""}`}><span className="location-permission-icon"><CitizenIcon name="pin" size={17} /></span><div><strong>{status === "unsupported" ? "Геолокация недоступна" : "Подтвердите местоположение"}</strong><p>{message || "Это помогает понять, про какую улицу идёт речь."}</p><button className="location-retry" onClick={requestLocation}>Попробовать снова</button></div></div>;
 }

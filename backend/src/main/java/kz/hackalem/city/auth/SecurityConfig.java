@@ -32,7 +32,7 @@ public class SecurityConfig {
             .requestCache(c->c.disable()).formLogin(c->c.disable()).httpBasic(c->c.disable())
             .exceptionHandling(c->c.authenticationEntryPoint((r,s,e)->error(s,401,"Требуется авторизация"))
                 .accessDeniedHandler((r,s,e)->error(s,403,"Недостаточно прав")))
-            .authorizeHttpRequests(c->c.dispatcherTypeMatchers(DispatcherType.ERROR).permitAll().requestMatchers("/api/health","/api/auth/register","/api/auth/login","/api/public/**").permitAll()
+            .authorizeHttpRequests(c->c.dispatcherTypeMatchers(DispatcherType.ERROR).permitAll().requestMatchers("/api/health","/api/auth/register","/api/auth/login","/api/auth/citizen/register","/api/auth/citizen/login","/api/public/**").permitAll()
                 .requestMatchers("/api/akim/**").hasRole("AKIM").requestMatchers("/api/**").authenticated().anyRequest().denyAll())
             .addFilterBefore(new OncePerRequestFilter() {
                 @Override protected void doFilterInternal(HttpServletRequest req,HttpServletResponse res,FilterChain chain) throws ServletException,IOException {

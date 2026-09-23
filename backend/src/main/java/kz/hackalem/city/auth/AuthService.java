@@ -23,6 +23,11 @@ public class AuthService {
         @NotBlank String districtId) {}
     public record Login(@NotBlank @Email String email, @NotBlank @Size(max=64) String password) {}
     public record Session(String token, Instant expiresAt, User user) {}
+    public record CitizenRegistration(@NotBlank @Pattern(regexp="[0-9]{12}") String iin,
+        @NotBlank @Size(min=10,max=64) String password, @NotBlank @Size(max=80) String displayName,
+        @NotBlank String districtId) {}
+    public record CitizenLogin(@NotBlank @Pattern(regexp="[0-9]{12}") String iin,
+        @NotBlank @Size(max=64) String password) {}
     private final JdbcClient db;
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
     private final SecureRandom random = new SecureRandom();
@@ -45,6 +50,24 @@ public class AuthService {
         var rows=db.sql("SELECT id,password_hash FROM app_users WHERE email=:email").param("email",email(r.email())).query().listOfRows();
         String hash=rows.isEmpty()?dummyHash:(String)rows.getFirst().get("password_hash");
         if (!encoder.matches(r.password(),hash) || rows.isEmpty()) throw new ApiException(HttpStatus.UNAUTHORIZED,"Неверный email или пароль");
+        return issue(user((UUID)rows.getFirst().get("id")));
+    }
+    @Transactional
+    public Session registerCitizen(CitizenRegistration r) {
+        validatePassword(r.password());
+        if (!db.sql("SELECT EXISTS(SELECT 1 FROM districts WHERE id=:id)").param("id",r.districtId()).query(Boolean.class).single())
+            throw ApiException.bad("Неизвестный район");
+        UUID id=UUID.randomUUID();
+        db.sql("INSERT INTO app_users(id,iin,password_hash,display_name,district_id,role) VALUES(:id,:iin,:hash,:name,:district,'CITIZEN')")
+            .param("id",id).param("iin",r.iin()).param("hash",encoder.encode(r.password()))
+            .param("name",r.displayName().trim()).param("district",r.districtId()).update();
+        return issue(user(id));
+    }
+    public Session loginCitizen(CitizenLogin r) {
+        if(r.password().getBytes(StandardCharsets.UTF_8).length>72) throw new ApiException(HttpStatus.UNAUTHORIZED,"Неверный ИИН или пароль");
+        var rows=db.sql("SELECT id,password_hash FROM app_users WHERE iin=:iin AND role='CITIZEN'").param("iin",r.iin()).query().listOfRows();
+        String hash=rows.isEmpty()?dummyHash:(String)rows.getFirst().get("password_hash");
+        if (!encoder.matches(r.password(),hash) || rows.isEmpty()) throw new ApiException(HttpStatus.UNAUTHORIZED,"Неверный ИИН или пароль");
         return issue(user((UUID)rows.getFirst().get("id")));
     }
     private Session issue(User user) {

@@ -51,3 +51,20 @@ button:disabled { cursor: not-allowed; opacity: .48; }
   .city-dock { max-width: calc(100vw - 20px); }
   .city-dock > button { flex: 0 0 auto; min-width: 58px; }
 }
+.district-insights { width:100%; min-width:0; padding:18px 0; }
+.insights-top { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:14px; }
+.live-rating { border:1px solid #b7ded0; border-radius:14px; padding:16px; background:#effaf5; color:#285b48; }
+.live-rating strong { font-size:36px; margin-right:10px; }
+.live-rating span,.live-rating p { font-size:12px; }
+.insight-counts { display:flex; flex-wrap:wrap; gap:9px; margin:14px 0; }
+.insight-counts span { padding:8px; background:#f0f4f6; border-radius:8px; font-size:11px; }
+.insight-counts b { display:block; font-size:21px; }
+.rating-method { margin:14px 0; font-size:12px; line-height:1.6; }
+.rating-method summary { cursor:pointer; font-weight:700; }
+.district-insights small,.insights-context { color:#617786; font-size:11px; line-height:1.6; }
+.recommendation-card { margin:14px 0; padding:16px; border:1px solid #d8e2e7; border-radius:14px; background:#fff; }
+.recommendation-card h4 { margin:0 0 8px; }
+.recommendation-card p,.recommendation-card li { font-size:12px; line-height:1.55; }
+.recommendation-card ul { padding-left:20px; }
+.recommendation-confidence { font-size:11px; color:#4b6d89; }
+.advisor-panel:has(.district-insights) { display:block; }
