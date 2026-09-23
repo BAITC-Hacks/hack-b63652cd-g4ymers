@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState, type PointerEvent } from "react";
-import { districts, measures, type Selection } from "@/lib/simulation";
+import { type Selection } from "@/lib/simulation";
+import type { Catalog } from "@/lib/api";
 import map from "@/lib/astana-map.json";
 import { Icon } from "./icon";
 
@@ -9,7 +10,8 @@ const HOME = { x: 2260, y: 3100 };
 const colors: Record<string, string> = { nura: "#8b5cf6", esil: "#6366f1", almaty: "#3b82f6", saryarka: "#6366b9", baikonur: "#648ed4" };
 const outlines = map.districts.map(d => ({ ...d, path: d.rings.map(r => `M${r.map(p => p.join(",")).join("L")}Z`).join(" ") }));
 
-export function CityMap({ selected, onSelect, plan, fullViewport = false, uiHidden = false }: { selected: string; onSelect: (id: string) => void; plan: Selection[]; fullViewport?: boolean; uiHidden?: boolean }) {
+export function CityMap({ selected, onSelect, plan, catalog, fullViewport = false, uiHidden = false }: { selected: string; onSelect: (id: string) => void; plan: Selection[]; catalog: Catalog; fullViewport?: boolean; uiHidden?: boolean }) {
+  const { districts, measures } = catalog;
   const [zoom, setZoom] = useState(1);
   const [center, setCenter] = useState(HOME);
   const [size, setSize] = useState({ width: 1000, height: 690 });

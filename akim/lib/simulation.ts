@@ -60,10 +60,11 @@ export const examplePlan: Selection[] = [
     { id: "M7", district: "nura" }, { id: "M8", district: "nura" }, { id: "M10", district: "nura" },
     { id: "M12" }, { id: "M5", district: "saryarka" },
 ];
-export function costOf(plan: Selection[]) {
-    return plan.reduce((sum, choice) => sum + (measures.find(m => m.id === choice.id)?.cost ?? 0), 0);
+export function costOf(plan: Selection[], availableMeasures = measures) {
+    return plan.reduce((sum, choice) => sum + (availableMeasures.find(m => m.id === choice.id)?.cost ?? 0), 0);
 }
-export function validatePlan(plan: Selection[], requireComplete = true): string | null {
+export function validatePlan(plan: Selection[], requireComplete = true, catalog = { districts, measures }): string | null {
+    const { districts, measures } = catalog;
     if (plan.length > 5 || (requireComplete && plan.length !== 5))
         return "Выберите ровно 5 мероприятий.";
     if (new Set(plan.map(s => s.id)).size !== plan.length)
@@ -79,7 +80,7 @@ export function validatePlan(plan: Selection[], requireComplete = true): string 
         if (counts[measure.category]! > 2)
             return "Можно выбрать максимум 2 меры одного направления.";
     }
-    if (costOf(plan) > 100)
+    if (costOf(plan, measures) > 100)
         return "Недостаточно бюджета. Удалите или замените мероприятие.";
     const find = (id: string) => plan.find(s => s.id === id);
     if (find("M1") && find("M3"))

@@ -60,3 +60,11 @@ test("strict critical threshold catches a negative tradeoff", () => {
   assert.ok(result.score < baseline.score);
   assert.equal(formatDelta(result.score - baseline.score).startsWith("−"), true);
 });
+
+test("validation uses prices and districts received from the backend catalog", () => {
+  const catalog = { districts: [{ id: "server-district", name: "Server", population: 1, values: [], note: "" }], measures: [{ id: "SERVER", name: "Server measure", description: "", category: "social", city: false, cost: 101, lag: 0, effects: {} }] };
+  assert.match(validatePlan([{ id: "SERVER", district: "server-district" }], false, catalog), /бюджета/);
+  catalog.measures[0].cost = 10;
+  assert.equal(validatePlan([{ id: "SERVER", district: "server-district" }], false, catalog), null);
+  assert.match(validatePlan([{ id: "SERVER", district: "nura" }], false, catalog), /район/);
+});

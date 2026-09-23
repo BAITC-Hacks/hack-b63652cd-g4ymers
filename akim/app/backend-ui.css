@@ -1,0 +1,53 @@
+.auth-screen { position: fixed; inset: 0; z-index: 100; overflow-y: auto; display: grid; place-items: center; padding: 24px; background: radial-gradient(ellipse at 20% 15%, #51338655, transparent 55%), radial-gradient(ellipse at 90% 90%, #235ec344, transparent 50%), #12101b; }
+.auth-card { width: min(100%, 410px); padding: 36px; background: #fff; color: #282033; border-radius: 24px; display: grid; gap: 20px; box-shadow: 0 24px 90px #0005; }
+.auth-mark { display: grid; place-items: center; width: 58px; height: 58px; background: #8054d9; color: #fff; border-radius: 16px; }
+.auth-card h1 { margin: 0; font-size: 28px; letter-spacing: -.7px; }
+.auth-card p { font-size: 14px; color: #756981; line-height: 1.7; }
+.auth-card small { color: #857b91; font-size: 11px; line-height: 1.6; }
+.auth-card label, .scenario-editor label, .status-form label, .report-filters label { display: grid; gap: 7px; font-size: 12px; color: #61566f; }
+.auth-card input, .scenario-editor input, .status-form select, .status-form textarea, .report-filters select { width: 100%; min-width: 0; border: 1px solid #dfd6e9; background: #fff; color: #282033; border-radius: 9px; padding: 11px 12px; font: inherit; }
+.auth-card input:focus, .scenario-editor input:focus, .status-form select:focus, .status-form textarea:focus, .report-filters select:focus { outline: 2px solid #9364e0; outline-offset: 2px; }
+.auth-card .button { width: 100%; justify-content: center; }
+.api-error { background: #fff0f2; color: #952849; padding: 12px; border: 1px solid #f3c7d3; border-radius: 9px; font-size: 12px; line-height: 1.7; overflow-wrap: anywhere; }
+.api-error button { display: block; text-decoration: underline; margin-top: 8px; }
+.api-success { padding: 10px; background: #eff9f5; color: #28785a; border-radius: 8px; }
+.workspace-account { position: absolute; top: 102px; left: 23px; display: flex; gap: 12px; align-items: center; border: 1px solid #dfd6e9; border-radius: 9px; background: #ffffffed; color: #70617f; padding: 8px 12px; font-size: 11px; pointer-events: auto; }
+.workspace-account button { color: #7242c0; text-decoration: underline; }
+.workspace-feedback { position: absolute; z-index: 35; top: 105px; left: 50%; transform: translateX(-50%); max-width: min(600px, calc(100vw - 40px)); background: #292038; color: #fff; padding: 11px 16px; border-radius: 10px; font-size: 12px; display: flex; align-items: center; gap: 15px; box-shadow: 0 5px 20px #211b3022; pointer-events: auto; }
+.workspace-feedback.is-error { background: #913758; }
+.workspace-feedback button { flex-shrink: 0; }
+.scenario-editor { margin: 0 18px 18px; display: grid; gap: 12px; }
+.scenario-buttons { display: grid; gap: 8px; }
+.scenario-buttons .button { width: 100%; justify-content: center; font-size: 11px; padding: 12px 8px; }
+.record-status { display: inline-block; font-size: 10px; line-height: 1.5; color: #7447b4; background: #f1e9fc; border-radius: 6px; padding: 4px 7px; }
+.server-panel-content { padding: 0 20px 20px; display: grid; gap: 14px; font-size: 12px; line-height: 1.6; }
+.server-panel-content > p { color: #756880; }
+.server-panel-content > .api-error { color: #952849; }
+.server-panel-content h3 { font-size: 15px; color: #342642; margin: 0; overflow-wrap: anywhere; }
+.saved-scenario { display: grid; gap: 9px; text-align: left; padding: 15px; border: 1px solid #e5ddef; border-radius: 12px; width: 100%; background: #fff; }
+.saved-scenario:hover { border-color: #9865d5; background: #fbf8ff; }
+.saved-scenario > span { font-size: 11px; color: #7a6b8a; overflow-wrap: anywhere; }
+.saved-scenario strong { color: #3b2c4c; font-size: 13px; }
+.saved-scenario b { color: #784dbc; font-size: 15px; }
+.record-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.record-top .record-status { flex-shrink: 0; max-width: 45%; }
+.list-pagination { display: flex; justify-content: space-between; align-items: center; font-size: 11px; padding-block: 12px; }
+.list-pagination button { color: #7748b4; }
+.empty-state { padding: 22px 12px; text-align: center; background: #f7f3fb; border-radius: 10px; }
+.immersive-shell .saved-panel { width: 390px; }
+.immersive-shell .reports-panel { width: 440px; }
+.report-filters { display: grid; gap: 10px; }
+.report-history { padding-left: 17px; display: grid; gap: 15px; }
+.report-history li > span { display: block; font-size: 10px; color: #8c7c98; }
+.report-history li p, .report-description { white-space: pre-wrap; overflow-wrap: anywhere; }
+.status-form { display: grid; gap: 12px; border-block: 1px solid #eee7f4; padding-block: 16px; }
+.city-dock { max-width: calc(100vw - 160px); overflow-x: auto; }
+button:disabled { cursor: not-allowed; opacity: .48; }
+@media (max-width: 760px) {
+  .auth-card { padding: 25px; }
+  .workspace-account { top: auto; bottom: 225px; left: 10px; right: auto; padding: 5px 9px; font-size: 10px; }
+  .workspace-feedback { top: 145px; width: calc(100vw - 30px); }
+  .immersive-shell .saved-panel, .immersive-shell .reports-panel { width: auto; left: 10px; right: 10px; }
+  .city-dock { max-width: calc(100vw - 20px); }
+  .city-dock > button { flex: 0 0 auto; min-width: 58px; }
+}
