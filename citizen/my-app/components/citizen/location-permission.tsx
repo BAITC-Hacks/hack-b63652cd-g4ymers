@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useCitizenOnboarding } from "./onboarding";
 import { CitizenIcon } from "@/components/citizen/icon";
 import { getSavedCitizenLocation, saveCitizenLocation, type CitizenLocation } from "@/lib/citizen";
 
@@ -9,6 +10,9 @@ type PermissionState = "checking" | "granted" | "prompt" | "denied" | "unsupport
 export function LocationPermission({ compact = false, onLocation }: { compact?: boolean; onLocation?: (location: CitizenLocation) => void }) {
   const [status, setStatus] = useState<PermissionState>("checking");
   const [message, setMessage] = useState("");
+  const tour = useCitizenOnboarding();
+  const canRequest = !tour || (tour.ready && !tour.isOpen);
+  const requested = useRef(false);
 
   function requestLocation() {
     if (!navigator.geolocation) {
@@ -34,7 +38,9 @@ export function LocationPermission({ compact = false, onLocation }: { compact?: 
   }
 
   useEffect(() => {
+    if (!canRequest || requested.current) return;
     const timer = window.setTimeout(() => {
+      requested.current = true;
       const saved = getSavedCitizenLocation();
       if (saved) {
         setStatus("granted");
@@ -44,9 +50,9 @@ export function LocationPermission({ compact = false, onLocation }: { compact?: 
       requestLocation();
     }, 0);
     return () => window.clearTimeout(timer);
-    // The prompt is intentionally requested once when this component enters the screen.
+    // Request once per page, after first-run guidance is closed, never from the tour.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [canRequest]);
 
   if (status === "checking") return <div className={`location-permission ${compact ? "compact" : ""}`}><span className="location-permission-icon"><CitizenIcon name="pin" size={17} /></span><div><strong>Проверяем ваше местоположение…</strong><p>Координаты нужны только для подтверждения места.</p></div></div>;
   if (status === "granted") return <div className={`location-permission granted ${compact ? "compact" : ""}`}><span className="location-permission-icon"><CitizenIcon name="check" size={17} /></span><div><strong>Координаты получены</strong><p>Сравним их с адресом QR-объекта. Координаты не публикуются.</p><button className="location-retry" onClick={requestLocation}>Обновить геолокацию</button></div></div>;
