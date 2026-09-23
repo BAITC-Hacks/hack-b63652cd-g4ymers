@@ -14,6 +14,15 @@
 }
 
 body { background: var(--background); color: var(--foreground); }
+.immersive-shell .advisor-panel:has(.district-insights) { display: block; max-height: calc(100dvh - 280px); overflow-y: auto; }
+.district-insights { color: var(--foreground); }
+.district-insights .live-rating, .district-insights .insight-counts span, .district-insights .recommendation-card { background: var(--surface); border-color: #78E2EA40; color: var(--foreground); }
+.district-insights .live-rating strong, .district-insights .insight-counts b { color: var(--cyan); }
+.district-insights small, .district-insights .insights-context, .district-insights .recommendation-confidence, .district-insights .live-rating p { color: var(--muted); }
+.district-insights .recommendation-card { overflow-wrap: anywhere; }
+@media (max-width: 760px) {
+  .immersive-shell .advisor-panel:has(.district-insights) { max-height: calc(100dvh - 310px); }
+}
 ::selection { background: var(--accent-secondary); color: var(--foreground); }
 button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible { outline-color: var(--cyan); }
 input::placeholder, textarea::placeholder { color: var(--muted); opacity: .7; }

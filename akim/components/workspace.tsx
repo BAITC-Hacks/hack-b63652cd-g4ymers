@@ -7,11 +7,8 @@ import { categories, examplePlan, formatScore, formatDelta, validatePlan, type S
 import { api, message, selectionsOf, type Catalog, type Result, type Scenario, type User } from "@/lib/api";
 import { ScenarioLibrary } from "./scenario-library";
 import { ReportsPanel } from "./reports-panel";
-<<<<<<< HEAD
 import { ScenarioFlow, type ScenarioStage } from "./scenario-flow";
-=======
 import { DistrictInsightsPanel } from "./district-insights";
->>>>>>> 1e0fd599a5448019ca7d59487a69081a666910be
 export function Workspace({ user, catalog, baseline, onLogout }: { user: User; catalog: Catalog; baseline: Result; onLogout: () => Promise<void> }) {
     const { districts, measures } = catalog;
     const [selectedDistrict, setSelectedDistrict] = useState("nura");
@@ -115,7 +112,7 @@ export function Workspace({ user, catalog, baseline, onLogout }: { user: User; c
         void run(onLogout);
     }
     return <div className={`app-shell immersive-shell ${uiHidden ? "interface-hidden" : ""}`}>
-      <CityMap selected={selectedDistrict} onSelect={id => { setSelectedDistrict(id); setPanel("district"); }} plan={plan} catalog={catalog} fullViewport uiHidden={uiHidden}/>
+      <CityMap selected={selectedDistrict} onSelect={id => { setSelectedDistrict(id); setPanel(current => current === "flow" || current === "advisor" ? current : "district"); }} plan={plan} catalog={catalog} fullViewport uiHidden={uiHidden}/>
       <main className="map-interface" aria-label="Управление городом" hidden={uiHidden}>
         <header className="floating-brand"><BrandLogo compact/><div><span className="eyebrow">АКИМ НА 5 ЧАСОВ · HACKALEM 2026</span><h1>E-Akim<span>AI</span></h1></div></header>
         <div className="floating-actions"><button className="icon-button" aria-label="Как играть" title="Как играть" onClick={() => openModal("help")}><Icon name="help" size={19}/></button><button className="icon-button" aria-label="Новый сценарий" title="Новый сценарий" disabled={busy || (!scenario && plan.length === 0)} onClick={() => openModal("reset")}><Icon name="reset" size={18}/></button></div>
@@ -130,9 +127,7 @@ export function Workspace({ user, catalog, baseline, onLogout }: { user: User; c
               <div className="district-metrics">{categories.map((c, i) => { const val = (selected.values[i * 2] + selected.values[i * 2 + 1]) / 2; const old = (before.values[i * 2] + before.values[i * 2 + 1]) / 2; return <div className="district-metric" key={c.id}><div className="metric-label"><Icon name={c.id} size={14}/><span>{c.short}</span></div><div className="metric-number">{val.toFixed(1)}<span>{val !== old ? formatDelta(val - old, 1) : "/ 100"}</span></div><div className="metric-bar"><span style={{ width: `${val}%` }}/></div></div>; })}</div>
               {panel === "district" && <DistrictInsightsPanel key={selectedDistrict} district={selectedDistrict} />}<p className="metrics-explainer">По направлениям показано среднее двух показателей. Итоговая оценка учитывает веса из задания.</p>
             </section>
-
-<<<<<<< HEAD
-            <section hidden={panel !== "advisor"} className="panel floating-panel advisor-panel" id="ai-advisor" tabIndex={-1}><button className="overlay-close icon-button" aria-label="Закрыть AI-советника" onClick={closePanel}><Icon name="close"/></button><div className="advisor-icon"><Icon name="sparkles" size={23}/></div><div className="advisor-content"><div className="advisor-title"><h2>Взгляд на город с AI</h2><span>СКОРО</span></div><p>Какие решения усиливают друг друга? Кому нужна поддержка? Здесь появится разбор вашего сценария.</p><div className="advisor-status"><span /> AI ещё не подключён. Расчёты по модели уже работают.</div></div><span className="advisor-decoration" aria-hidden="true">✧</span></section>
+            {panel === "advisor" && <section className="panel floating-panel advisor-panel" id="ai-advisor" tabIndex={-1}><button className="overlay-close icon-button" aria-label="Закрыть AI-советника" onClick={closePanel}><Icon name="close"/></button><DistrictInsightsPanel key={selectedDistrict} district={selectedDistrict} advice /></section>}
         {panel === "flow" && <ScenarioFlow
           stage={stage} onStage={setStage} catalog={catalog} baseline={baseline} result={result}
           plan={plan} selectedDistrict={selectedDistrict} onDistrict={setSelectedDistrict}
@@ -142,45 +137,6 @@ export function Workspace({ user, catalog, baseline, onLogout }: { user: User; c
           onSave={save} onFinalize={finalize} onNew={() => openModal("reset")}
           onReload={scenario ? () => openScenario(scenario.id) : undefined} onClose={closePanel}
         />}
-=======
-            {panel === "advisor" && <section className="panel floating-panel advisor-panel" id="ai-advisor" tabIndex={-1}><button className="overlay-close icon-button" aria-label="Закрыть AI-советника" onClick={closePanel}><Icon name="close"/></button><DistrictInsightsPanel key={selectedDistrict} district={selectedDistrict} advice /></section>}
-          <aside hidden={panel !== "plan"} id="overlay-plan" className="panel floating-panel plan-panel" aria-labelledby="plan-title"><button className="overlay-close icon-button" aria-label="Закрыть сценарий" onClick={closePanel}><Icon name="close"/></button><div className="panel-heading"><div><h2 id="plan-title">Ваш сценарий</h2><p>Соберите план развития города</p></div><span className="count-badge purple">{plan.length}/5</span></div>
-            <div className="scenario-editor"><label>Название сценария<input maxLength={120} value={name} disabled={busy || finalized} onChange={e => setName(e.target.value)}/></label><span className="record-status">{finalized ? "Завершён · только просмотр" : dirty ? "Есть несохранённые изменения" : scenario ? "Все изменения сохранены" : "Новый сценарий"}</span><div className="scenario-buttons">{!finalized && <><button className="button button-outline" disabled={busy || !name.trim() || (!!scenario && !dirty)} onClick={save}>{busy ? "Подождите…" : "Сохранить черновик"}</button><button className="button button-primary" disabled={busy || !complete || !name.trim()} onClick={finalize}>Завершить сценарий</button></>}{scenario && <button className="text-button" disabled={busy} onClick={() => openScenario(scenario.id)}>Перезагрузить из базы</button>}</div></div>
-            <div className="plan-budget"><div><span>Бюджет сценария</span><strong>{spent}<small> / 100</small></strong></div><div className="budget-track"><span style={{ width: `${spent}%` }}/></div><div className="budget-caption"><span>Условные единицы</span><span>Осталось <b>{100 - spent}</b></span></div></div>
-            <div className="plan-list">{Array.from({ length: 5 }, (_, i) => {
-            const choice = plan[i];
-            const m = choice ? measures.find(m => m.id === choice.id)! : null;
-            return m && choice ? <div className="plan-slot filled" key={choice.id}><span className={`plan-slot-icon ${m.category}`}><Icon name={m.category} size={17}/></span><div><h3>{m.name}</h3><span>{m.city ? "Весь город" : districts.find(d => d.id === choice.district)!.name} <b>· {m.cost} ед.</b></span></div><button className="remove-button" aria-label={`Убрать ${m.name} из плана`} disabled={busy || finalized} onClick={() => removeMeasure(m.id)}><Icon name="close" size={14}/></button></div> : <div className="plan-slot empty" key={`empty-${i}`}><span className="slot-number">0{i + 1}</span><div><span>Ваше решение</span><small><button onClick={() => setPanel("catalog")}>Открыть инициативы →</button></small></div><Icon name="plus" size={14}/></div>;
-        })}</div>
-            <div className="plan-hint"><Icon name="layers" size={16}/><p>До 2 мер на направление.<br />Каждое решение имеет значение.</p></div>
-            <div className="plan-notice" role="status" aria-live="polite">{notice}</div>
-            <div className="plan-actions"><button className="button button-primary simulate-button" disabled={!complete || busy} onClick={() => openModal("results")}>Посмотреть результат<Icon name="arrow" size={17}/></button><p>{complete ? "Все условия соблюдены. Город готов к изменениям." : `Добавьте ещё ${5 - plan.length} ${5 - plan.length === 1 ? "решение" : 5 - plan.length === 5 ? "решений" : "решения"}, чтобы оценить сценарий`}</p><button className="example-button" disabled={busy || finalized} onClick={loadExample}><Icon name="sparkles" size={14}/> Загрузить пример из задания</button></div>
-            <div className="score-note"><span className="score-note-icon"><Icon name="target" size={21}/></span><h3>Сильный город — для всех</h3><p>Итоговый балл учитывает качество жизни в самом слабом районе. Не оставляйте его позади.</p><span>70% среднее + 30% слабый район − штрафы</span></div>
-          </aside>
-
-          <section hidden={panel !== "catalog"} id="overlay-catalog" className="panel floating-panel catalog-panel" aria-labelledby="catalog-title"><button className="overlay-close icon-button" aria-label="Закрыть инициативы" onClick={closePanel}><Icon name="close"/></button>
-            <div className="panel-heading"><div><h2 id="catalog-title">Городские инициативы</h2><p>Маленькие шаги. Большие изменения.</p></div><span className="count-badge">{measures.length}</span></div>
-            <label className="search-box"><Icon name="search" size={16}/><input value={query} onChange={e => setQuery(e.target.value)} placeholder="Найти мероприятие" aria-label="Поиск мероприятий"/></label>
-            <div className="category-filter" aria-label="Фильтр по направлению"><button title="Все направления" aria-label="Все направления" aria-pressed={category === "all"} className={category === "all" ? "selected" : ""} onClick={() => setCategory("all")}><Icon name="grid" size={17}/></button>{categories.map(c => <button key={c.id} title={c.name} aria-label={c.name} aria-pressed={category === c.id} className={category === c.id ? "selected" : ""} onClick={() => setCategory(c.id)}><Icon name={c.id} size={17}/></button>)}</div>
-            <div className="catalog-notice" role="status" aria-live="polite">{notice}</div><div className="catalog-caption"><span>{category === "all" ? "Все направления" : categories.find(c => c.id === category)!.short}</span><span>{filtered.length} из {measures.length}</span></div>
-            <div className="measure-list">
-              {filtered.map(m => {
-            const added = plan.find(s => s.id === m.id);
-            const candidate = [...plan, { id: m.id, ...(m.city ? {} : { district: selectedDistrict }) }];
-            const unavailable = added ? null : validatePlan(candidate, false, catalog);
-            return <article className={`measure-card ${added ? "measure-added" : ""}`} key={m.id}>
-                  <div className="measure-top"><span className={`measure-category ${m.category}`}><Icon name={m.category} size={14}/>{categories.find(c => c.id === m.category)!.short}</span><span className="measure-id">{m.id}</span></div>
-                  <h3>{m.name}</h3><p>{m.description}</p>
-                  <div className="effect-chips">{Object.entries(m.effects).map(([metric, value]) => <span key={metric} className={value < 0 ? "negative" : ""} title={`${metricNames[metric as keyof typeof metricNames]}: полный эффект до учёта задержки`}>{metric} {value > 0 ? "+" : ""}{value}</span>)}</div>
-                  <div className="measure-meta"><span><Icon name={m.city ? "city" : "pin"} size={12}/>{m.city ? "Весь город" : added ? districts.find(d => d.id === added.district)!.name : selected.name}</span><span><Icon name="clock" size={12}/>{m.lag} кв.</span></div>
-                  <div className="measure-bottom"><strong>{m.cost}<span> ед.</span></strong><button className={`add-button ${added ? "is-added" : ""}`} aria-label={added ? `Удалить: ${m.name}` : `Добавить: ${m.name}`} title={unavailable ?? (added ? "Удалить из сценария" : "Добавить в сценарий")} disabled={busy || finalized || !!unavailable} data-unavailable={!!unavailable} onClick={() => added ? removeMeasure(m.id) : addMeasure(m.id)}><Icon name={added ? "check" : "plus"} size={14}/>{added ? "В плане" : "Добавить"}</button></div>
-                </article>;
-        })}
-              {!filtered.length && <div className="search-empty"><Icon name="search" size={26}/><h3>Ничего не найдено</h3><p>Попробуйте другое название.</p><button className="text-button" onClick={() => { setQuery(""); setCategory("all"); }}>Сбросить поиск</button></div>}
-            </div>
-            <div className="catalog-footer"><label className="catalog-district-picker"><Icon name="pin" size={14}/><span>Район для новых мер:</span><select aria-label="Район для новых мероприятий" value={selectedDistrict} onChange={event => setSelectedDistrict(event.target.value)}>{districts.map(d => <option key={d.id} value={d.id}>{d.name}</option>)}</select></label><span className="catalog-budget-summary">План {plan.length}/5 · Осталось {100 - spent} ед.</span><button className="catalog-to-plan" onClick={() => setPanel("plan")}>К сценарию <Icon name="arrow" size={13}/></button></div>
-          </section>
->>>>>>> 1e0fd599a5448019ca7d59487a69081a666910be
 
         {panel === "saved" && <section id="overlay-saved" className="panel floating-panel saved-panel" aria-label="Сохранённые сценарии"><button className="overlay-close icon-button" aria-label="Закрыть сохранённые сценарии" onClick={closePanel}><Icon name="close"/></button><div className="panel-heading"><h2>Сохранённые сценарии</h2></div><ScenarioLibrary version={libraryVersion} busy={busy} onOpen={openScenario}/></section>}
         {panel === "reports" && <section id="overlay-reports" className="panel floating-panel reports-panel" aria-label="Обращения жителей"><button className="overlay-close icon-button" aria-label="Закрыть обращения" onClick={closePanel}><Icon name="close"/></button><div className="panel-heading"><h2>Обращения жителей</h2></div><ReportsPanel catalog={catalog}/></section>}
