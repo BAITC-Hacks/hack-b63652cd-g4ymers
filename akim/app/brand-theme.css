@@ -1,0 +1,146 @@
+:root {
+  color-scheme: dark;
+  --background: #0D0F14;
+  --foreground: #F4F5F1;
+  --surface: #2C303A;
+  --accent: #5A82EC;
+  --accent-secondary: #4F56B0;
+  --cyan: #78E2EA;
+  --muted: #C8C9C7;
+  --border: #2C303A;
+  --purple: var(--accent);
+  --purple-soft: var(--surface);
+  --blue: var(--accent);
+}
+
+body { background: var(--background); color: var(--foreground); }
+::selection { background: var(--accent-secondary); color: var(--foreground); }
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible { outline-color: var(--cyan); }
+input::placeholder, textarea::placeholder { color: var(--muted); opacity: .7; }
+select option { background: var(--surface); color: var(--foreground); }
+
+.auth-screen { background: radial-gradient(ellipse at 12% 10%, #4F56B033, transparent 55%), radial-gradient(ellipse at 95% 95%, #5A82EC26, transparent 50%), var(--background); }
+.auth-card { background: var(--background); border: 1px solid var(--surface); color: var(--foreground); box-shadow: 0 24px 90px #0005; }
+.auth-card h1, .server-panel-content h3, .saved-scenario strong, .measure-card h3, .plan-slot h3 { color: var(--foreground); }
+.auth-card p, .auth-card small, .auth-card label, .scenario-editor label, .status-form label, .report-filters label, .server-panel-content > p, .saved-scenario > span, .report-history li > span { color: var(--muted); }
+.auth-mark, .brand-mark { background: transparent; border-radius: 0; }
+.brand-logo { display: block; object-fit: contain; flex-shrink: 0; }
+.brand-logo-full { width: min(100%, 280px); height: auto; }
+.floating-brand .brand-logo-mark { width: 34px; height: 50px; }
+.auth-card > .brand-logo { margin-bottom: 4px; }
+.auth-card input, .scenario-editor input, .status-form select, .status-form textarea, .report-filters select { background: var(--surface); color: var(--foreground); border-color: #C8C9C733; }
+.auth-card input:focus, .scenario-editor input:focus, .status-form select:focus, .status-form textarea:focus, .report-filters select:focus { outline-color: var(--cyan); }
+.auth-card input:autofill { box-shadow: 0 0 0 1000px var(--surface) inset; -webkit-text-fill-color: var(--foreground); }
+.eyebrow, .dialog-eyebrow { color: var(--cyan); }
+.floating-brand h1, .floating-brand h1 > span { color: var(--foreground); }
+.floating-brand .eyebrow { color: var(--muted); }
+
+.floating-brand, .floating-actions, .immersive-shell .summary-strip, .immersive-shell .floating-panel, .app-dialog,
+.workspace-account, .interface-toggle, .landmark-detail, .map-loading, .map-tools, .map-navigation select,
+.viewport-map .map-district-chips { background: var(--background); color: var(--foreground); border-color: var(--surface); box-shadow: 0 8px 32px #0004; }
+.panel-heading p, .summary-label, .summary-value > span, .immersive-shell .summary-label, .budget-caption,
+.plan-budget > div:first-child > span, .plan-budget small, .plan-hint, .plan-slot.filled > div > span,
+.measure-card > p, .measure-meta, .measure-id, .measure-bottom > strong > span, .catalog-caption, .catalog-caption span:first-child,
+.catalog-footer, .district-heading p, .district-score > span, .metric-label, .metric-number > span, .metrics-explainer,
+.metrics-heading p, .district-comparison small, .comparison-legend, .dialog-content > p, .dialog-content > .dialog-footnote,
+.rules-list, .result-hero > span, .result-hero p, .result-districts > div, .result-facts, .advisor-content > p,
+.advisor-status, .plan-actions > p, .map-data-note, .report-history li > span { color: var(--muted); }
+.summary-value, .plan-budget strong, .budget-caption b, .district-score strong, .metric-number,
+.measure-bottom > strong, .district-comparison > strong, .result-districts strong { color: var(--foreground); }
+.summary-item, .immersive-shell .summary-item, .measure-meta, .catalog-footer, .status-form, .result-districts > div { border-color: var(--surface); }
+.summary-value > .score-delta { background: var(--surface); color: var(--cyan); }
+
+.button-primary, .category-filter button.selected, .map-loading button { background: var(--accent); color: var(--background); border-color: var(--accent); box-shadow: none; }
+.button-primary:hover:not(:disabled), .map-loading button:hover { background: var(--cyan); color: var(--background); box-shadow: none; }
+.button-primary:disabled { background: var(--surface); color: var(--muted); opacity: .55; }
+.button-outline, .search-box, .category-filter button, .plan-budget, .plan-slot.filled, .plan-slot.empty,
+.saved-scenario, .empty-state, .result-hero, .formula-box, .catalog-footer { background: var(--surface); border-color: #C8C9C726; color: var(--foreground); }
+.button-outline:hover, .saved-scenario:hover { background: var(--accent-secondary); border-color: var(--accent); color: var(--foreground); }
+.search-box input { color: var(--foreground); }
+.search-box input::placeholder { color: var(--muted); }
+.search-box:focus-within { outline-color: var(--cyan); }
+.category-filter button:hover { background: var(--accent-secondary); color: var(--foreground); }
+.measure-card { background: var(--background); border-color: var(--surface); }
+.measure-card:hover, .measure-card.measure-added { border-color: var(--accent); background: var(--surface); box-shadow: none; }
+.measure-category, .measure-category.transport, .measure-category.social, .measure-category.services { color: var(--cyan); }
+.effect-chips span, .record-status, .subtle-badge, .count-badge, .count-badge.purple { background: var(--surface); color: var(--cyan); border-color: #78E2EA40; }
+.measure-added .effect-chips span, .saved-scenario .record-status { background: var(--background); }
+.effect-chips span.negative { color: #FFB4BD; background: #FFB4BD12; }
+.add-button { color: var(--cyan); border-color: #78E2EA66; }
+.add-button:hover, .add-button.is-added { background: var(--accent-secondary); color: var(--foreground); border-color: var(--accent); }
+.add-button[data-unavailable="true"] { color: var(--muted); border-color: var(--surface); }
+.text-button, .example-button, .catalog-to-plan, .workspace-account button, .list-pagination button, .saved-scenario b { color: var(--cyan); }
+.catalog-district-picker select { color: var(--foreground); background: var(--background); border-color: var(--surface); }
+.catalog-notice, .plan-notice { background: var(--surface); color: var(--cyan); }
+.plan-slot-icon, .district-icon, .advisor-icon, .summary-icon, .summary-icon.blue { background: var(--accent-secondary); color: var(--foreground); border-color: var(--accent-secondary); }
+.slot-number { border-color: #C8C9C740; color: var(--muted); }
+.plan-slot.empty > div > span, .plan-slot.empty small, .plan-slot.empty > svg { color: var(--muted); }
+.remove-button, .icon-button { color: var(--muted); }
+.remove-button:hover, .icon-button:hover, .overlay-close, .tool-active { background: var(--surface); color: var(--cyan); }
+.budget-track, .metric-bar, .mini-budget, .comparison-track, .decision-dots span { background: var(--surface); }
+.plan-budget .budget-track { background: var(--background); }
+.budget-track > span, .metric-bar > span, .mini-budget > span, .decision-dots .filled, .comparison-track i { background: var(--accent); }
+.district-metric:nth-child(2n) .metric-bar > span { background: var(--cyan); }
+.comparison-track b, .comparison-legend span { background: var(--muted); }
+.comparison-legend span:nth-of-type(2) { background: var(--accent); }
+.district-comparison { color: var(--foreground); }
+.district-comparison:hover, .district-comparison.selected { background: var(--surface); border-color: var(--accent); }
+.result-hero > strong, .result-hero small { color: var(--cyan); }
+.result-hero small { background: var(--background); }
+.app-dialog::backdrop { background: #0D0F14BB; }
+.advisor-title h2 { color: var(--foreground); }
+.advisor-title > span { color: var(--cyan); border-color: var(--accent-secondary); }
+.advisor-decoration { color: var(--surface); }
+.advisor-status > span, .live-dot { background: var(--cyan); }
+.city-dock { background: var(--background); border-color: var(--surface); color: var(--muted); scrollbar-color: var(--accent-secondary) var(--background); }
+.city-dock > button.dock-primary { background: var(--accent); color: var(--background); }
+.city-dock > button:hover, .city-dock > button[aria-expanded="true"], .city-dock > button.dock-primary:hover, .city-dock > button.dock-primary[aria-expanded="true"] { background: var(--accent-secondary); color: var(--foreground); }
+.city-dock b, .dock-divider { background: var(--surface); }
+.workspace-feedback { background: var(--accent-secondary); color: var(--foreground); }
+.workspace-feedback.is-error, .api-error, .server-panel-content > .api-error { background: #2C1820; border-color: #FFB4BD66; color: #FFB4BD; }
+.api-success { background: var(--surface); color: var(--cyan); }
+.interface-hidden .interface-toggle { background: var(--background); border-color: var(--accent); color: var(--cyan); }
+
+/* Keep the original map detail, with a darker basemap under the blue/cyan overlays. */
+.geographic-map { background: var(--background); }
+.astana-illustration.is-rotating, .astana-illustration.is-rotating * { cursor: grabbing; }
+.astana-basemap { filter: invert(.91) hue-rotate(180deg) saturate(.22) brightness(.68); }
+.geographic-map::after { background: linear-gradient(#0D0F14DD, #0D0F1400 25%, #0D0F1400 80%, #0D0F14DD); }
+.map-district-chips button { background: var(--background); border-color: var(--surface); color: var(--muted); }
+.map-district-chips button[aria-pressed="true"], .viewport-map .map-district-chips button[aria-pressed="true"] { background: var(--accent); color: var(--background); border-color: var(--accent); }
+.map-district-chips button[aria-pressed="true"] i { background: var(--background) !important; }
+.real-district {
+  transition: fill-opacity 300ms ease, stroke-opacity 300ms ease, stroke-width 300ms ease, stroke 300ms ease;
+}
+.real-district.is-selected { fill-opacity: .23; stroke: var(--cyan); stroke-width: 2.6; }
+.real-district:hover, .real-district:focus-visible { fill-opacity: .32; stroke: var(--cyan); stroke-opacity: 1; stroke-width: 3.2; }
+.map-district-chips button {
+  transition: background-color 240ms ease, color 240ms ease, border-color 240ms ease, transform 240ms ease, box-shadow 240ms ease;
+}
+.map-district-chips button i { transition: background-color 240ms ease; }
+.viewport-map .map-district-chips button:hover, .map-district-chips button:focus-visible {
+  background: var(--accent-secondary); color: var(--foreground); transform: translateY(-2px); box-shadow: 0 4px 12px #0003;
+}
+.map-district-chips button:active { transform: translateY(0); }
+.map-tools > span, .tool-divider { background: var(--surface); }
+.astana-map .map-tools > .zoom-value { background: transparent; color: var(--foreground); }
+.astana-compass, .astana-map-bottom, .astana-map-bottom p, .geographic-map .astana-map-bottom a { color: var(--muted); }
+.astana-map-bottom strong, .astana-map-bottom > div { color: var(--muted); }
+.landmark-detail > span, .landmark-detail > small { color: var(--cyan); border-color: var(--surface); }
+.landmark-detail > h3 { color: var(--foreground); }
+.landmark-detail > p { color: var(--muted); }
+.real-district-label rect { fill: var(--background); stroke: var(--accent); }
+.real-district-label rect { transition: fill 300ms ease, stroke 300ms ease; }
+.real-district-label[data-selected="true"] rect { fill: var(--accent-secondary); stroke: var(--cyan); }
+.real-district-label text { fill: var(--foreground); }
+.real-district-label circle { fill: var(--cyan); }
+.real-landmark > circle { fill: var(--background); stroke: var(--cyan); }
+.real-landmark > circle + circle { fill: var(--cyan); }
+.real-landmark rect { fill: var(--background); stroke: var(--surface); }
+.real-landmark text { fill: var(--foreground); }
+.real-landmark path { stroke: var(--cyan); }
+.astana-compass path { fill: var(--accent); }
+.astana-compass path + path { fill: var(--cyan); }
+.measure-list, .immersive-shell .floating-panel { scrollbar-color: var(--accent-secondary) var(--background); }
+.example-button:hover { background: var(--surface); color: var(--cyan); }
+@media (max-width: 760px) { .floating-brand .brand-logo-mark { width: 24px; height: 35px; } }

@@ -3,9 +3,12 @@ import "./globals.css";
 import "./map-workspace.css";
 import "./immersive-map.css";
 import "./backend-ui.css";
+import "./brand-theme.css";
+import "./scenario-flow.css";
 
 export const metadata: Metadata = {
-  title: "Аким на 5 часов — Astana City Lab",
+  title: "E-AkimAI — Аким на 5 часов",
+  icons: { icon: "/brand/mark.svg" },
   description: "Один бюджет. Пять решений. Интерактивный симулятор развития Астаны — HackAlem AI 2026, команда g4ymers.",
 };
 

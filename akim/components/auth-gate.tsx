@@ -2,6 +2,7 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { api, ApiError, message, type User, type Catalog, type Result } from "@/lib/api";
 import { Icon } from "./icon";
+import { BrandLogo } from "./brand-logo";
 import { Workspace } from "./workspace";
 
 export function AuthGate() {
@@ -47,7 +48,7 @@ export function AuthGate() {
   return <>
     {user && data && <div inert={expired || undefined}><Workspace key={user.id} user={user} catalog={data.catalog} baseline={data.baseline} onLogout={logout}/></div>}
     {(!user || !data || expired) && <div className="auth-screen"><form className="auth-card" onSubmit={login} aria-label="Вход акима">
-      <span className="auth-mark"><Icon name="city" size={30}/></span><span className="eyebrow">ASTANA CITY LAB</span>
+      <BrandLogo/><span className="eyebrow">АСТАНА · АКИМ НА 5 ЧАСОВ</span>
       <h1>{loading ? "Загружаем город" : expired && user ? "Войдите снова" : "Кабинет акима"}</h1>
       <p>{expired && user ? "Сессия завершилась. Ваш текущий план остаётся на экране после повторного входа." : "Решения для города. Обращения жителей. Один кабинет."}</p>
       {!loading && <><label>Email<input type="email" autoComplete="username" required value={email} onChange={e => setEmail(e.target.value)} disabled={busy}/></label><label>Пароль<input type="password" autoComplete="current-password" required value={password} onChange={e => setPassword(e.target.value)} disabled={busy}/></label>
