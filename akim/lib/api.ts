@@ -7,6 +7,12 @@ export type Result = { districts: (Omit<District, "note"> & { score: number })[]
 export type Scenario = { id: string; name: string; selections: Selection[]; result: Result; budget: number; status: "DRAFT" | "FINAL"; version: number; createdAt: string; updatedAt: string };
 export type Status = "NEW" | "UNDER_REVIEW" | "PLANNED" | "IN_PROGRESS" | "RESOLVED" | "REJECTED";
 export type Problem = { id: string; title: string; description: string; district: string; districtId: string; locationLabel: string; status: Status; category: string; urgency: string; confirmations: number; version: number; createdAt: string; comments: { id: string; displayName: string; text: string }[] };
+export type DistrictInsights = {
+  districtId: string; districtName: string;
+  rating: { baseline: number; score: number; activePenalty: number; resolutionBonus: number; active: number; resolved: number; rejected: number };
+  recommendations: { topic: string; address: string; latitude: number; longitude: number; activeReports: number; residents: number; confidence: number; actions: string[]; measureIds: string[] }[];
+  modelVersion: string; trainingSamples: number; trainingSource: string; ratingMethod: string; generatedAt: string;
+};
 export const statusLabels: Record<Status, string> = { NEW: "Получено", UNDER_REVIEW: "На рассмотрении", PLANNED: "Запланировано", IN_PROGRESS: "В работе", RESOLVED: "Решено", REJECTED: "Отклонено" };
 export const transitions: Record<Status, Status[]> = { NEW: ["UNDER_REVIEW", "REJECTED"], UNDER_REVIEW: ["PLANNED", "IN_PROGRESS", "REJECTED"], PLANNED: ["IN_PROGRESS", "REJECTED"], IN_PROGRESS: ["RESOLVED", "REJECTED"], RESOLVED: [], REJECTED: [] };
 export const categoryLabels: Record<string, string> = { TRANSPORT: "Транспорт", GREEN_SPACES: "Озеленение", SOCIAL_INFRASTRUCTURE: "Соцсфера", SAFETY: "Безопасность", CITY_SERVICES: "Городские сервисы" };

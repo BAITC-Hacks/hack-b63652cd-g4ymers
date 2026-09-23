@@ -13,6 +13,6 @@ export default function CitizenScanPage() {
     <LocationPermission />
     <QrScanner onDetected={(code) => router.push(`/report/${encodeURIComponent(code)}`)} />
     <section className="scanner-help"><div className="scanner-help-icon"><CitizenIcon name="pin" size={18} /></div><div><strong>Где искать QR-код?</strong><p>На информационных табличках рядом с фонарями, остановками, дворами и другими городскими объектами.</p></div></section>
-    <div className="scanner-demo"><span>Нет таблички рядом?</span><button onClick={() => router.push("/report/ASTANA-NURA-LIGHT-001")}>Открыть демо-место <CitizenIcon name="arrow" size={14} /></button></div>
+    <p className="scanner-demo">Для обращения нужен код зарегистрированного объекта. Не используйте код другого места.</p>
   </>;
 }

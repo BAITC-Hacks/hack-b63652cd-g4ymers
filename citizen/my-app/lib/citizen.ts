@@ -142,285 +142,75 @@ export const categoryTone: Record<CitizenCategory, string> = {
   CITY_SERVICES: "services",
 };
 
-export const demoQrLocation: QrLocation = {
-  code: "ASTANA-NURA-LIGHT-001",
-  district: "Нура",
-  objectName: "Уличный фонарь №142",
-  objectType: "Уличное освещение",
-  streetName: "ул. Сыганак",
-  latitude: 51.1034,
-  longitude: 71.4302,
-  active: true,
-  locationVerified: true,
-  history: [
-    { id: "history-1", date: "20 сентября 2026", title: "Жители сообщили о проблеме", description: "23 сообщения о неработающих фонарях возле остановки.", type: "REPORT" },
-    { id: "history-2", date: "21 сентября 2026", title: "Заявка проверена", description: "Городская служба подтвердила неисправность на месте.", type: "CHANGE" },
-    { id: "history-3", date: "22 сентября 2026", title: "Ремонт запланирован", description: "Работы по замене светильников начались.", type: "RESOLUTION" },
-  ],
-  recentChanges: [
-    { id: "change-1", date: "22 сентября", title: "Начат ремонт освещения", description: "Подрядчик заменяет неисправные светильники на участке возле остановки.", status: "IN_PROGRESS" },
-    { id: "change-2", date: "июль 2026", title: "Обновлена остановка", description: "Появились новая скамейка и табличка с расписанием автобусов.", status: "DONE" },
-  ],
-};
-
-const demoProblems: CitizenProblem[] = [
-  {
-    id: "problem-lighting-nura",
-    title: "Не работает уличное освещение",
-    description: "Несколько фонарей возле остановки не работают вечером. Район становится небезопасным после заката.",
-    category: "SAFETY",
-    status: "IN_PROGRESS",
-    district: "Нура",
-    locationLabel: "ул. Сыганак, остановка «Нура»",
-    latitude: 51.1034,
-    longitude: 71.4302,
-    confirmations: 47,
-    reportCount: 23,
-    createdAt: "2026-09-20T09:30:00+05:00",
-    updatedAt: "2026-09-22T17:10:00+05:00",
-    comments: [
-      { id: "comment-1", displayName: "Айдос", text: "Сегодня вечером фонари всё ещё не работали.", createdAt: "2026-09-23T10:20:00+05:00" },
-      { id: "comment-2", displayName: "Меруерт", text: "Рабочие приезжали утром, спасибо за проверку.", createdAt: "2026-09-22T14:10:00+05:00" },
-    ],
-  },
-  {
-    id: "problem-sidewalk-esil",
-    title: "Повреждённый тротуар",
-    description: "На тротуаре у школы просели несколько плиток. После дождя здесь трудно пройти с коляской.",
-    category: "SOCIAL_INFRASTRUCTURE",
-    status: "UNDER_REVIEW",
-    district: "Есиль",
-    locationLabel: "ул. Достык, 12",
-    latitude: 51.128,
-    longitude: 71.415,
-    confirmations: 12,
-    reportCount: 8,
-    createdAt: "2026-09-18T11:00:00+05:00",
-    updatedAt: "2026-09-21T09:00:00+05:00",
-    comments: [{ id: "comment-3", displayName: "Сания", text: "Проблема особенно заметна у входа в школу.", createdAt: "2026-09-21T12:40:00+05:00" }],
-  },
-  {
-    id: "problem-trash-almaty",
-    title: "Мусор возле остановки",
-    description: "Контейнеры переполнены, мусор разносит ветром по тротуару.",
-    category: "CITY_SERVICES",
-    status: "RESOLVED",
-    district: "Алматы",
-    locationLabel: "пр. Абылай хана, 44",
-    latitude: 51.151,
-    longitude: 71.39,
-    confirmations: 8,
-    reportCount: 5,
-    createdAt: "2026-09-13T08:00:00+05:00",
-    updatedAt: "2026-09-19T16:00:00+05:00",
-    comments: [{ id: "comment-4", displayName: "Данияр", text: "Спасибо, контейнеры вывезли.", createdAt: "2026-09-19T17:20:00+05:00" }],
-  },
-  {
-    id: "problem-bus-saryarka",
-    title: "Остановка без навеса",
-    description: "На остановке нет навеса и скамейки. В дождь людям приходится ждать на открытом месте.",
-    category: "TRANSPORT",
-    status: "PLANNED",
-    district: "Сарыарка",
-    locationLabel: "ул. Бейбитшилик, 31",
-    latitude: 51.174,
-    longitude: 71.425,
-    confirmations: 31,
-    reportCount: 17,
-    createdAt: "2026-09-11T15:40:00+05:00",
-    updatedAt: "2026-09-20T10:00:00+05:00",
-    comments: [],
-  },
-  {
-    id: "problem-park-baikonur",
-    title: "Сухие деревья в парке",
-    description: "В центральной части парка несколько деревьев высохли, ветки могут быть опасны для посетителей.",
-    category: "GREEN_SPACES",
-    status: "NEW",
-    district: "Байконур",
-    locationLabel: "Парк «Жерұйық»",
-    latitude: 51.19,
-    longitude: 71.36,
-    confirmations: 6,
-    reportCount: 3,
-    createdAt: "2026-09-22T13:00:00+05:00",
-    updatedAt: "2026-09-22T13:00:00+05:00",
-    comments: [],
-  },
-  {
-    id: "problem-crossing-nura",
-    title: "Не работает кнопка светофора",
-    description: "Пешеходная кнопка на переходе срабатывает через раз.",
-    category: "SAFETY",
-    status: "UNDER_REVIEW",
-    district: "Нура",
-    locationLabel: "ул. Керей, Жәнібек хандар",
-    latitude: 51.089,
-    longitude: 71.44,
-    confirmations: 19,
-    reportCount: 9,
-    createdAt: "2026-09-17T10:15:00+05:00",
-    updatedAt: "2026-09-18T12:00:00+05:00",
-    comments: [],
-  },
-];
-
-const cloneProblems = () => demoProblems.map((problem) => ({ ...problem, comments: problem.comments.map((comment) => ({ ...comment })) }));
-
-const clonePublicProblems = () => cloneProblems().filter((problem) => problem.status === "RESOLVED");
-
-function readLocal<T>(key: string, fallback: T): T {
-  if (typeof window === "undefined") return fallback;
+export type CitizenUser = { id: string; email: string | null; displayName: string; districtId: string; role: "CITIZEN" };
+export type CitizenCatalog = { districts: { id: string; name: string }[] };
+export class CitizenApiError extends Error {
+  constructor(public status: number, message: string) { super(message); }
+}
+export async function citizenRequest<T>(path: string, init?: RequestInit): Promise<T> {
+  let response: Response;
   try {
-    const value = window.localStorage.getItem(key);
-    return value ? (JSON.parse(value) as T) : fallback;
-  } catch {
-    return fallback;
+    response = await fetch(`/api/backend/${path}`, { ...init, credentials: "same-origin", cache: "no-store",
+      headers: { "Content-Type": "application/json", ...init?.headers } });
+  } catch { throw new CitizenApiError(0, "Нет связи с сервером. Попробуйте ещё раз."); }
+  if (!response.ok) {
+    const problem = await response.json().catch(() => ({}));
+    if (response.status === 401 && path !== "auth/me" && !path.startsWith("auth/citizen/")) window.dispatchEvent(new Event("citizen-session-expired"));
+    throw new CitizenApiError(response.status, problem.detail ?? "Не удалось выполнить запрос");
+  }
+  return response.status === 204 ? undefined as T : response.json();
+}
+export function getSavedCitizenLocation(): CitizenLocation | undefined {
+  if (typeof window === "undefined") return undefined;
+  try {
+    const saved = JSON.parse(window.sessionStorage.getItem("citizen-location") ?? "null") as CitizenLocation | null;
+    if (!saved || !Number.isFinite(saved.latitude) || !Number.isFinite(saved.longitude) ||
+      !Number.isFinite(Date.parse(saved.capturedAt)) || Date.now() - Date.parse(saved.capturedAt) > 300000) return undefined;
+    return saved;
+  } catch { return undefined; }
+}
+export function saveCitizenLocation(location: CitizenLocation) {
+  try { window.sessionStorage.setItem("citizen-location", JSON.stringify(location)); } catch { /* Location remains in memory. */ }
+}
+export function locationDistance(a: CitizenLocation, b: QrLocation) {
+  const radians = Math.PI / 180;
+  const value = Math.sin((b.latitude-a.latitude)*radians/2)**2 +
+    Math.cos(a.latitude*radians)*Math.cos(b.latitude*radians)*Math.sin((b.longitude-a.longitude)*radians/2)**2;
+  return 6371000 * 2 * Math.asin(Math.sqrt(Math.min(1, value)));
+}
+async function allPages(path: string): Promise<CitizenProblem[]> {
+  const result: CitizenProblem[] = [];
+  for (let page = 0; ; page++) {
+    const rows = await citizenRequest<CitizenProblem[]>(`${path}?size=50&page=${page}`);
+    result.push(...rows);
+    if (rows.length < 50) return result;
   }
 }
-
-function writeLocal<T>(key: string, value: T) {
-  if (typeof window !== "undefined") window.localStorage.setItem(key, JSON.stringify(value));
-}
-
-export function getSavedCitizenLocation() {
-  return readLocal<CitizenLocation | undefined>("citizen-location", undefined);
-}
-
-export function saveCitizenLocation(location: CitizenLocation) {
-  writeLocal("citizen-location", location);
-}
-
-function addRewardEvent(type: RewardEvent["type"], points: number, uniqueKey?: string) {
-  const events = readLocal<RewardEvent[]>("citizen-reward-events", []);
-  if (uniqueKey && events.some((event) => event.id === uniqueKey)) return;
-  writeLocal("citizen-reward-events", [...events, { id: uniqueKey ?? `${type}-${Date.now()}`, type, points, createdAt: new Date().toISOString() }]);
-}
-
-const apiBase = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "");
-
-async function request<T>(path: string, init?: RequestInit): Promise<T> {
-  if (!apiBase) throw new Error("DEMO_MODE");
-  const response = await fetch(`${apiBase}${path}`, {
-    ...init,
-    headers: { "Content-Type": "application/json", ...(init?.headers ?? {}) },
-  });
-  if (!response.ok) throw new Error(`API_${response.status}`);
-  return response.json() as Promise<T>;
-}
-
 export const citizenApi = {
-  async getProblems(): Promise<CitizenProblem[]> {
-    try { return await request<CitizenProblem[]>("/api/public/problems?status=RESOLVED"); }
-    catch (error) {
-      if (error instanceof Error && error.message !== "DEMO_MODE") throw error;
-      const confirmed = readLocal<string[]>("citizen-confirmed", []);
-      return clonePublicProblems().map((problem) => ({ ...problem, confirmedByMe: confirmed.includes(problem.id), confirmations: problem.confirmations + (confirmed.includes(problem.id) ? 1 : 0) }));
-    }
+  getProblems: () => allPages("public/problems"),
+  getMyReports: () => allPages("citizen/my-reports"),
+  getProblem: (id: string, privateView = false) => citizenRequest<CitizenProblem>(
+    `${privateView ? "citizen/my-reports" : "public/problems"}/${encodeURIComponent(id)}`),
+  getQrLocation: (code: string) => citizenRequest<QrLocation>(`public/qr/${encodeURIComponent(code)}`),
+  async getPlaceHistory(code: string, coordinates?: CitizenLocation) {
+    const location = await this.getQrLocation(code);
+    const distance = coordinates ? locationDistance(coordinates, location) : undefined;
+    return { location: { ...location, distanceMeters: distance,
+      locationVerified: Boolean(coordinates && coordinates.accuracy <= 150 && distance !== undefined && distance <= 250) },
+      history: location.history ?? [], recentChanges: location.recentChanges ?? [] };
   },
-  async getProblem(id: string, privateView = false) {
-    if (privateView) {
-      try { return await request<CitizenProblem>(`/api/citizen/my-reports/${encodeURIComponent(id)}`); }
-      catch (error) {
-        if (error instanceof Error && error.message !== "DEMO_MODE" && !error.message.startsWith("API_")) throw error;
-        return cloneProblems().slice(0, 2).find((problem) => problem.id === id);
-      }
-    }
-    try { return await request<CitizenProblem>(`/api/public/problems/${encodeURIComponent(id)}`); }
-    catch (error) {
-      if (error instanceof Error && error.message !== "DEMO_MODE" && !error.message.startsWith("API_")) throw error;
-      return (await this.getProblems()).find((problem) => problem.id === id);
-    }
-  },
-  async getMyReports(): Promise<CitizenProblem[]> {
-    try { return await request<CitizenProblem[]>("/api/citizen/my-reports"); }
-    catch (error) {
-      if (error instanceof Error && error.message !== "DEMO_MODE") throw error;
-      return cloneProblems().slice(0, 2);
-    }
-  },
-  async getQrLocation(code: string) {
-    try { return await request<QrLocation>(`/api/public/qr/${encodeURIComponent(code)}`); }
-    catch (error) {
-      if (error instanceof Error && error.message !== "DEMO_MODE") throw error;
-      return code.toUpperCase() === demoQrLocation.code ? demoQrLocation : undefined;
-    }
-  },
-  async getPlaceHistory(code: string, citizenLocation?: CitizenLocation) {
-    const query = citizenLocation ? `?latitude=${citizenLocation.latitude}&longitude=${citizenLocation.longitude}&accuracy=${citizenLocation.accuracy}` : "";
-    let location: QrLocation | undefined;
-    try {
-      location = await request<QrLocation>(`/api/public/qr/${encodeURIComponent(code)}${query}`);
-    } catch (error) {
-      if (error instanceof Error && error.message !== "DEMO_MODE") throw error;
-      location = code.toUpperCase() === demoQrLocation.code ? { ...demoQrLocation, locationVerified: Boolean(citizenLocation) } : undefined;
-    }
-    if (!location) return undefined;
-    addRewardEvent("SCAN", 1, `SCAN-${location.code}`);
-    return { location, history: location.history ?? [], recentChanges: location.recentChanges ?? [] };
-  },
-  async confirmProblem(id: string) {
-    try { return await request<CitizenProblem>(`/api/citizen/problems/${encodeURIComponent(id)}/confirm`, { method: "POST" }); }
-    catch (error) {
-      if (error instanceof Error && error.message !== "DEMO_MODE") throw error;
-      const confirmed = readLocal<string[]>("citizen-confirmed", []);
-      if (!confirmed.includes(id)) writeLocal("citizen-confirmed", [...confirmed, id]);
-      addRewardEvent("CONFIRM", 2, `CONFIRM-${id}`);
-      return this.getProblem(id, true);
-    }
-  },
-  async addComment(id: string, text: string) {
-    try { return await request<CitizenComment>(`/api/citizen/problems/${encodeURIComponent(id)}/comments`, { method: "POST", body: JSON.stringify({ text }) }); }
-    catch (error) {
-      if (error instanceof Error && error.message !== "DEMO_MODE") throw error;
-      const comments = readLocal<Record<string, CitizenComment[]>>("citizen-comments", {});
-      const comment = { id: `local-${Date.now()}`, displayName: "Вы", text, createdAt: new Date().toISOString(), own: true };
-      writeLocal("citizen-comments", { ...comments, [id]: [...(comments[id] ?? []), comment] });
-      addRewardEvent("COMMENT", 2, `COMMENT-${id}-${text.slice(0, 20)}`);
-      return comment;
-    }
-  },
-  async createReport(payload: { qrCode?: string; title: string; description: string; category: CitizenCategory; urgency: CitizenUrgency; photoUrl?: string; location?: CitizenLocation }) {
-    try { return await request<{ id: string; problemId: string }>("/api/citizen/reports", { method: "POST", body: JSON.stringify(payload) }); }
-    catch (error) {
-      if (error instanceof Error && error.message !== "DEMO_MODE") throw error;
-      const id = `report-demo-${Date.now()}`;
-      writeLocal("citizen-last-report", { id, problemId: "problem-lighting-nura" });
-      addRewardEvent("REPORT", 10, `REPORT-${id}`);
-      return { id, problemId: "problem-lighting-nura" };
-    }
-  },
-  async getProfile(): Promise<CitizenProfile> {
-    try { return await request<CitizenProfile>("/api/citizen/profile"); }
-    catch (error) {
-      if (error instanceof Error && error.message !== "DEMO_MODE") throw error;
-      const confirmed = readLocal<string[]>("citizen-confirmed", []);
-      const events = readLocal<RewardEvent[]>("citizen-reward-events", []);
-      const earned = events.reduce((sum, event) => sum + event.points, 0);
-      const reports = events.filter((event) => event.type === "REPORT").length;
-      return {
-        displayName: "Алия С.", district: "Нура", reports: 2 + reports, confirmedProblems: confirmed.length + 8, resolvedReports: 1,
-        points: 240 + earned, level: earned > 80 ? "Городской помощник" : "Активный житель", streakDays: Math.min(7, 2 + events.length), reportsThisMonth: reports,
-        badges: [
-          { id: "first-scan", title: "Первый скан", description: "Сканировали QR места", icon: "scan", earned: events.some((event) => event.type === "SCAN") },
-          { id: "first-report", title: "Внимательный сосед", description: "Отправили сообщение", icon: "report", earned: reports > 0 },
-          { id: "community", title: "Голос района", description: "Поддержали 5 проблем", icon: "community", earned: confirmed.length >= 5 },
-          { id: "resolved", title: "До результата", description: "Проблема решена", icon: "resolved", earned: true },
-        ],
-      };
-    }
-  },
+  confirmProblem: (id: string) => citizenRequest<CitizenProblem>(`citizen/problems/${encodeURIComponent(id)}/confirm`, { method: "POST" }),
+  addComment: (id: string, text: string) => citizenRequest<CitizenComment>(`citizen/problems/${encodeURIComponent(id)}/comments`,
+    { method: "POST", body: JSON.stringify({ text }) }),
+  createReport: (payload: { qrCode: string; title: string; description: string; category: CitizenCategory; urgency: CitizenUrgency; location?: CitizenLocation }) =>
+    citizenRequest<{ id: string; problemId: string }>("citizen/reports", { method: "POST", body: JSON.stringify(payload) }),
+  getProfile: () => citizenRequest<CitizenProfile>("citizen/profile"),
 };
-
-export function getMergedComments(problem: CitizenProblem): CitizenComment[] {
-  const local = readLocal<Record<string, CitizenComment[]>>("citizen-comments", {});
-  return [...problem.comments, ...(local[problem.id] ?? [])];
-}
-
+export function getMergedComments(problem: CitizenProblem): CitizenComment[] { return problem.comments; }
 export function formatDate(value: string) {
-  return new Intl.DateTimeFormat("ru-RU", { day: "numeric", month: "long" }).format(new Date(value));
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? value : new Intl.DateTimeFormat("ru-RU", { day: "numeric", month: "long" }).format(date);
 }
-
 export function timeAgo(value: string) {
   const diff = Math.max(1, Math.floor((Date.now() - new Date(value).getTime()) / 60000));
   if (diff < 60) return `${diff} мин назад`;

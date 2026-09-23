@@ -11,6 +11,11 @@ public class ReportController {
     private final ReportService reports;
     public ReportController(ReportService reports) { this.reports=reports; }
     @GetMapping("/api/public/qr/{code}") Map<String,Object> qr(@PathVariable String code) { return reports.qr(code); }
+    @GetMapping("/api/public/problems") List<Map<String,Object>> journal(@RequestParam(defaultValue="0") int page,@RequestParam(defaultValue="20") int size) {
+        return reports.list(null,false,null,ReportService.Status.RESOLVED,null,page,size);
+    }
+    @GetMapping("/api/public/problems/{id}") Map<String,Object> publicDetail(@PathVariable UUID id) { return reports.get(null,id); }
+    @GetMapping("/api/citizen/my-reports/{id}") Map<String,Object> own(@AuthenticationPrincipal User user,@PathVariable UUID id) { return reports.own(user,id); }
     @PostMapping("/api/citizen/reports") @ResponseStatus(org.springframework.http.HttpStatus.CREATED)
     Map<String,UUID> create(@AuthenticationPrincipal User user,@Valid @RequestBody ReportService.NewReport input) { return reports.create(user,input); }
     @GetMapping({"/api/citizen/problems","/api/akim/problems"})

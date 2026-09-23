@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import "./globals.css";
+import { CitizenAuthProvider } from "@/components/citizen/auth-provider";
 
 export const metadata: Metadata = {
   title: "Қалаға көмект — город рядом",
@@ -8,5 +9,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
-  return <html lang="ru"><body>{children}</body></html>;
+  return <html lang="ru"><body><CitizenAuthProvider>{children}</CitizenAuthProvider></body></html>;
 }
